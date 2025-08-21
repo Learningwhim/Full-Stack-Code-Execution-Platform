@@ -6,48 +6,70 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // this will put up a req in db to fetch status of provided submission
-app.get('/status/:submission_id',(req,res) => {
+app.get('/status/:submission_id', async (req,res) => {
+    try {
     const id = req.params.submission_id;
-    db.get(`SELECT * FROM submissions WHERE submission_id = ?`, [id], (error, submission) =>{
-        if(error) return console.error(error);
-        if(!submission) return res.status(404).json({error: "submssion not found"});
-        else{
-            res.json({status: submission.status});
-        }
-    });
+    const submission = await db('submissions').where({submission_id: id}).select('status').first();
+    }
+    catch(error){
+        res.status(404).json({error: "Submission not found"});
+    }
 });
 
 //calls the function ehich adds submission in db for processing
-app.post('/submit', (req,res) => {
-    const submission = req.body;
-    addSubmission(submission);
-    res.send("pending...");
-})
-
-function addProblem(problem){ // inserts problem in db
-        db.run('INSERT INTO problems(problem_id,problem_title,problem_statement,time_limit,memory_limit) VALUES (?,?,?,?,?)',
-            [problem.problem_id,problem.problem_title,problem.problem_statement,problem.time_limit,problem.memory_limit], 
-        function(error){
-            if(error) console.error(error);
-            else console.log(`Inserted with id ${this.lastID}`);
+async function addSubmission(submission) {
+    try {
+        const result = await db('submissions').insert({
+            problem_id: submission.problem_id,
+            user_id: submission.user_id,
+            code: submission.code,
+            language: submission.language,
+            status: submission.status,
+        }).returning('submission_id'); 
+        return result;
+    }
+    catch(error){
+        console.error("server error");
+        throw error;
+    }
+}
+    
+app.post('/submit', async (req,res) => {
+    try {
+    const newSubmission = await addSubmission(req.body);
+    res.json({submission_id: newSubmission[0].submission_id});
+    }
+    catch(error){
+        res.status(500).json({ error: 'Server error while creating submission'});;
+    }
+    
+});
+async function addProblem(problem){ // inserts problem in db
+        try {
+            const result = await db('problems').insert({
+                title: problem.problem_id,
+                statement: problem.statement,
+                time_limit: problem.time_limit,
+                memory_limit: problem.memory_limit,
+            }).returning('problem_id'); return result;
         }
-    );
+        catch(error){
+            console.error("Failed to add problem");
+            throw error;
+        }
 }
 
-function addSubmission(submission){
-    db.run('INSERT INTO submissions (problem_id,user_id,code,language,status,timestamp) VALUES (?,?,?,?,?,?)',
-        [submission.problem_id,submission.user_id,submission.code,submission.language,submission.status,submission.timestamp],
-        function(error){
-            if(error) console.error(error);
-            else console.log(`submitted with id ${this.lastID}`);
-        }
-    );
-}
+
 //calls the function which adds the provided problem in db
-app.post('/add-problem', (req, res) => {
+app.post('/add-problem', async (req, res) => {
+    try {
     const problem = req.body;
-    addProblem(problem);
-    res.send(`Problem_id: ${problem.problem_id} added successfully`);
+    const newProblemId = await addProblem(problem);
+    res.json({ problem_id: newProblemId[0].problem_id});
+    }catch(error){
+        res.status(500).json({error: "unable to add problem"});
+    }
+    
 });
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
