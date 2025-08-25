@@ -13,7 +13,7 @@ module.exports = {
       user: 'postgres',
       password: '*&r67.wKfsCQ4bk', // from settings
       database: 'postgres',
-      ssl: { rejectUnauthorized: false }
+      ssl: { rejectUnauthorized: false, require: true  }
     }
   },
 

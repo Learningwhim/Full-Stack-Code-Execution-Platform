@@ -1,18 +1,47 @@
 const express = require('express');
 const db = require('./database');
+const cors = require('cors');
+app.use(cors()); // allows all origins
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.get('http://localhost:3000/problems/:problem_id', async (req, res) => {
+    try{
+    const problem_id = req.params.problem_id; 
+    const problem = db('problems').where('problem_id', problem_id).select('*').first();
+    res.send({problem});
+    }catch(error){
+        res.status(500).json({error: "Could'nt fetch problem"});
+    }
+});
+
+app.get('/problems', async (req, res) => {
+    try {const problems = await getProblems();
+    res.json(problems);}
+    catch(error){
+        res.status(500).json({error: "Couldn't fetch problems"})
+    }
+});
+
+async function getProblems(){
+    const problems = await db('problems').select('problem_id','title');
+    return problems;
+}
 // this will put up a req in db to fetch status of provided submission
 app.get('/status/:submission_id', async (req,res) => {
     try {
     const id = req.params.submission_id;
     const submission = await db('submissions').where({submission_id: id}).select('status').first();
+    if(!submission) {
+        res.status(404).json({ error: "Submission not found"});
+    }
+    else res.json(submission);
     }
     catch(error){
-        res.status(404).json({error: "Submission not found"});
+        res.status(500).json({error: "Unable to fetch from db"});
     }
 });
 
@@ -42,19 +71,19 @@ app.post('/submit', async (req,res) => {
     catch(error){
         res.status(500).json({ error: 'Server error while creating submission'});;
     }
-    
 });
+
 async function addProblem(problem){ // inserts problem in db
         try {
             const result = await db('problems').insert({
-                title: problem.problem_id,
+                title: problem.title,
                 statement: problem.statement,
                 time_limit: problem.time_limit,
                 memory_limit: problem.memory_limit,
             }).returning('problem_id'); return result;
         }
         catch(error){
-            console.error("Failed to add problem");
+            console.error("Failed to add problem", error);
             throw error;
         }
 }
