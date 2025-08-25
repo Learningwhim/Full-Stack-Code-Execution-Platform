@@ -9,18 +9,18 @@ function ProblemPage() {
     const [status, setStatus] = useState("Pending");
     const [code, setCode] = useState("");
     const [language, setLanguage] = useState("cpp");
-
+    const { problem_id } = useParams();
     useEffect(() => {
         try{
             const fetchProblem = async() => {
-            const { problem_id } = useParams();
-            const response = await fetch(`http://localhost:3000/problems/${problem_id}`);
+            const response = await fetch(`http://localhost:3000/ProblemPage/${problem_id}`);
             const data = await response.json();
             setProblem(data);
             setLoading(false);
         }
         fetchProblem();
         }catch(error){
+            setError("Failed to fetch Problem");
 
         }
         

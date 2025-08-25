@@ -1,20 +1,23 @@
 const express = require('express');
 const db = require('./database');
 const cors = require('cors');
+const app = express();
 app.use(cors()); // allows all origins
 app.use(cors({ origin: 'http://localhost:5173' }));
 
-const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.get('http://localhost:3000/problems/:problem_id', async (req, res) => {
+app.get('/problems/:problem_id', async (req, res) => {
     try{
     const problem_id = req.params.problem_id; 
-    const problem = db('problems').where('problem_id', problem_id).select('*').first();
-    res.send({problem});
+    const problem = await db('problems').where('problem_id', problem_id).select('*').first();
+    if(problem) 
+    res.json(problem);
+    else res.status(404).json({error: "Problem not found"});
     }catch(error){
-        res.status(500).json({error: "Could'nt fetch problem"});
+        res.status(500).json({error: "Couldn't fetch problem"});
     }
 });
 
