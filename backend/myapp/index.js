@@ -38,6 +38,7 @@ app.get('/status/:submission_id', async (req,res) => {
     try {
     const id = req.params.submission_id;
     const submission = await db('submissions').where({submission_id: id}).select('status').first();
+    console.log(submission);
     if(!submission) {
         res.status(404).json({ error: "Submission not found"});
     }
@@ -56,7 +57,7 @@ async function addSubmission(submission) {
             user_id: submission.user_id,
             code: submission.code,
             language: submission.language,
-            status: submission.status,
+            status: "Pending",
         }).returning('submission_id'); 
         return result;
     }

@@ -16,13 +16,12 @@ function HomePage() {
         }catch(error){
             setError("Failed to fetch problems");
         }
-        
     }
         fetchProblems();
     }, []);
     return(
         <>
-        <div>
+        <div id="homepage-body">
              
                 {
                     isLoading 

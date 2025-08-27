@@ -1,44 +1,73 @@
-#root {
-  max-width: 100vw;
-  max-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0 0;
+/* --- 1. Global Reset & Foundation --- */
+/* These rules should be at the very top of your main CSS file. */
+/* They establish a consistent base for the entire application. */
+* {
+  box-sizing: border-box;
+  margin: 0;
   padding: 0;
-  text-align: center;
-   color: rgba(255, 255, 255, 0.87);
-  /* color:#2a2a2a; */
+}
+
+/* Make the html, body, and your root div take up the full available height. */
+/* This creates a stable foundation for percentage-based heights later on. */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #242424;
+  color: rgba(255, 255, 255, 0.87);
+  overflow: hidden; /* Disables scrolling on the main page body */
 }
-nav {
-  position: sticky;
-  z-index: 10;
-  height: 20px;
-}
+
 a {
   color: rgba(255, 255, 255, 0.87);
   text-decoration: none;
 }
-body{
-  margin: 0;
-  max-height: calc(100vh-20px);
-  max-width: 100vw;
+
+/* --- 2. Fixed Navigation Bar --- */
+/* This is taken out of the normal document flow and stays at the top. */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  height: 40px; /* Fixed height */
+  line-height: 40px; /* Vertically centers the text */
+  padding: 0 20px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+  z-index: 10;
 }
-/* Full page container */
-.problems-page-body {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  background-color: #1e1e1e;
-  color: white;
-  font-family: Arial, sans-serif;
+body {
+  margin: 0;
+  padding: 0;
+  margin-top: 40px; /* navbar ki height ke barabar */
+
+}
+#homepage-body {
+  max-width: 70%;
+}
+li {
+  padding: 7px;
+  border: 1px solid white;
 }
 
-/* Left side → problem statement */
+/* --- 3. Main Page Layout Container --- */
+/* This container holds the two columns (problem and submission). */
+.problems-page-body {
+  display: flex; /* Arranges children (the two panes) in a row */
+  width: 100%;
+  height: 100vh; /* CRITICAL FIX: Use 100vh to fill the ENTIRE viewport height */
+  padding-top: 0; /* Pushes the CONTENT down to make space for the fixed nav */
+  background-color: #1e1e1e;
+}
+
+/* --- 4. Left Pane: Problem Statement --- */
 .problems-container {
-  flex: 1;
+  flex: 1; /* Takes up 1 part of the available space */
   padding: 20px;
   border-right: 2px solid #333;
-  overflow-y: auto;
+  overflow-y: auto; /* Allows ONLY this container to scroll if content is too long */
 }
 
 .problem-title {
@@ -47,41 +76,40 @@ body{
   margin-bottom: 10px;
   text-align: left;
 }
+
 .problem-description {
   font-size: smaller;
   font-weight: 200;
+  text-align: left;
 }
-/* Right side → submission */
+
+/* --- 5. Right Pane: Submission Area --- */
 .submission-container {
-  flex: 1;
+  flex: 1; /* Takes up 1 part of the available space */
   padding: 12px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack children vertically */
   background-color: #242424;
 }
 
-/* Header (status + language + submit btn ek line me) */
+/* Header within the submission pane */
 .submission-header {
   display: flex;
   justify-content: space-between;
+  flex-shrink: 0;
   align-items: center;
   margin-bottom: 12px;
+  flex-shrink: 0; /* Prevents the header from shrinking */
 }
 
-/* Status text */
 .status {
-  margin: 0 5px;
-  max-width: fit-content;
   font-weight: bold;
   font-size: 0.9rem;
   color: #ddd;
 }
 
-/* Language dropdown */
 select {
-  margin: 0 5px;
   padding: 6px;
-  max-width:fit-content;
   background-color: #2e2e2e;
   color: white;
   border: 1px solid #555;
@@ -89,7 +117,6 @@ select {
   margin: 0 8px;
 }
 
-/* Chotu button */
 .submit {
   background-color: #333;
   color: rgb(43, 181, 31);
@@ -101,13 +128,18 @@ select {
   border-radius: 6px;
   transition: background 0.2s ease-in-out;
 }
+
 .submit:hover {
-  color: #45a0496d;
+  background-color: #444;
 }
 
-/* Code input box → bacha hua pura space le */
+/* The code editor text area */
 .submitted-code-input {
-  flex: 1;
+  height: 60%; /* This makes the text area fill all remaining vertical space */
+   overflow-y: auto;    /* vertical scroll if content exceeds */
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
   background-color: #2e2e2e;
   color: #f5f5f5;
   border: none;
@@ -117,4 +149,11 @@ select {
   font-size: 0.9rem;
   resize: none;
   border-radius: 8px;
+}
+.submitted-code-input::-webkit-scrollbar {
+  width: 8px;
+}
+.submitted-code-input::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
 }

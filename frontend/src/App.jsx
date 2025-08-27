@@ -8,7 +8,6 @@ function App() {
   
   return (
     <>
-        <div>
           <nav>
             <Link to='/'>Home</Link>
           </nav>
@@ -16,7 +15,6 @@ function App() {
             <Route path='/' element={<HomePage/>} />
             <Route path='/ProblemPage/:problem_id' element={<ProblemPage/>} />
           </Routes>
-        </div>
     </>
   );
 }

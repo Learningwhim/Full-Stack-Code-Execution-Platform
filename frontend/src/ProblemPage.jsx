@@ -5,13 +5,13 @@ function ProblemPage() {
 
     const [problem, setProblem] = useState((null));
     const [isLoading, setLoading] = useState(true);
+    const [submissionId, setSubmissionId] = useState();
     const [error, setError] = useState(null);
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState("Pending");
     const [code, setCode] = useState("");
     const [language, setLanguage] = useState("cpp");
     const { problem_id } = useParams();
     useEffect(() => {
-        
             const fetchProblem = async() => {
             try {
                 const response = await fetch(`http://localhost:3000/problems/${problem_id}`);
@@ -30,39 +30,41 @@ function ProblemPage() {
     
 
     const handleSubmit = async (code) => {
+        setStatus("Pending");
         const submission = {
-        problem_id: problem.problem_id,
+        problem_id: problem_id,
         user_id: "Guest",
         code: code,
         language: language,
-        status: status,
     }
         try{
-            
+            setStatus("Submitting...");
             const response = await fetch('http://localhost:3000/submit', {
             method: "POST",
             headers: {"Content-type":"application/json"},
             body: JSON.stringify(submission),
             });
-            const data = response.json();
-            const submission_id = data.submission_id;
-            async function pollStatus(submission_id){
-                const response = await fetch(`http://localhost:3000/status/${submission_id}`);
-                const data = await response.json();
-                const newStatus = data.status;
-
-                setStatus(newStatus);
-            }
-            
-            const intervalId = setInterval(() => pollStatus(submission_id),1000);
-            if (status !== "Pending" && status !== "In Progress") {
-                clearInterval(intervalId); // Stop polling for ANY final status
-            }
+            const data = await response.json();
+            setSubmissionId(data.submission_id);
         }catch(err){
             console.error(err);
         }
     }
-
+    useEffect( () => {
+        if(!submissionId) return;
+        
+        const intervalId = setInterval(async () => {
+            const response = await fetch(`http://localhost:3000/status/${submissionId}`);
+            const data = await response.json();
+            const newStatus = data.status;
+            console.log(newStatus);
+            setStatus(newStatus);
+            if( newStatus !== "Pending" && newStatus !== "In Progress"){
+            clearInterval(intervalId);
+            }
+        }, 1000);
+        return () => clearInterval(intervalId);
+    },[submissionId]);
 
     return(
         <>
@@ -80,22 +82,26 @@ function ProblemPage() {
                 }
                 </div>
                 <div className="submission-container">
-                {/* Add this wrapper div */}
                 <div className="submission-header">
-                    <button className="submit" onClick={() => handleSubmit(code)}>
+                    {
+                    status == "Submitting..."? (<button className="submit">
+                    Submitting...
+                    </button>)
+                    : (<button className="submit" onClick={() => handleSubmit(code)}>
                     Submit
-                    </button>
+                    </button>)
+                    }
                     <p className='status'>Status: {status}</p>
                     <select>
                     <option label="cpp">cpp</option>
                     </select>
                 </div>
-
-                {/* The textarea now correctly fills the remaining space */}
                 <textarea 
                     className="submitted-code-input" 
+                    id="submitted-code-input" 
                     value={code} 
-                    onChange={(e) => setCode(e.target.value)}
+                    onChange={(e) => {setCode(e.target.value)
+                    }}
                 />
 
                 </div>
