@@ -27,6 +27,7 @@ app.get('/problems', async (req, res) => {
     try {const problems = await getProblems();
     res.json(problems);}
     catch(error){
+        console.error("Error in GET /problems:", error);
         res.status(500).json({error: "Couldn't fetch problems"})
     }
 });
