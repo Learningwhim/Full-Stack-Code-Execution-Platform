@@ -13,7 +13,7 @@ function HomePage() {
         
         const fetchProblems = async () => {
         try {
-        const response = await fetch('http://localhost:3000/problems');
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/problems`);
         const data = await response.json();
         setProblems(data);
         setLoading(false);
@@ -32,7 +32,7 @@ function HomePage() {
             memory_limit: problem_memory_limit
         }
         try {
-            const response = await fetch("http://localhost:3000/add-problem", {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/add-problem`, {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(problem),

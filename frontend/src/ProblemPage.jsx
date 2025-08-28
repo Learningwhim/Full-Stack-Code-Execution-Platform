@@ -14,7 +14,7 @@ function ProblemPage() {
     useEffect(() => {
             const fetchProblem = async() => {
             try {
-                const response = await fetch(`http://localhost:3000/problems/${problem_id}`);
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/problems/${problem_id}`);
                 const data = await response.json();
                 setProblem(data);
                 setLoading(false);
@@ -39,7 +39,7 @@ function ProblemPage() {
     }
         try{
             setStatus("Submitting...");
-            const response = await fetch('http://localhost:3000/submit', {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/submit`, {
             method: "POST",
             headers: {"Content-type":"application/json"},
             body: JSON.stringify(submission),
@@ -54,7 +54,7 @@ function ProblemPage() {
         if(!submissionId) return;
         
         const intervalId = setInterval(async () => {
-            const response = await fetch(`http://localhost:3000/status/${submissionId}`);
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/status/${submissionId}`);
             const data = await response.json();
             const newStatus = data.status;
             console.log(newStatus);
