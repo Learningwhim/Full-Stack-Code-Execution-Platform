@@ -1,10 +1,7 @@
-// Update with your config settings.
+// knexfile.js
+require('dotenv').config();
 
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
 module.exports = {
-
   development: {
     client: 'pg',
     connection: {
@@ -13,9 +10,10 @@ module.exports = {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      ssl: { rejectUnauthorized: false, require: true  }
+      ssl: { rejectUnauthorized: false }  // <- Supabase ke liye important
+    },
+    migrations: {
+      tableName: 'knex_migrations'
     }
-  },
-
-  
+  }
 };
