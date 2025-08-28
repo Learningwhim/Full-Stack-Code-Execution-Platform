@@ -3,8 +3,9 @@ const db = require('./database');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(cors()); // allows all origins
-app.use(cors({ origin: `${import.meta.env.VITE_API_BASE_URL}:5173` }));
+app.use(cors({
+  origin: process.env.CLIENT_ORIGIN_URL
+}));
 
 
 app.use(express.json());
