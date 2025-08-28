@@ -10,7 +10,8 @@ module.exports = {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      ssl: { rejectUnauthorized: false }  // <- Supabase ke liye important
+      ssl: { rejectUnauthorized: false },  // <- Supabase ke liye important
+      family: 4
     },
     migrations: {
       tableName: 'knex_migrations'
