@@ -44,8 +44,22 @@ body {
   margin-top: 40px; /* navbar ki height ke barabar */
 
 }
-#homepage-body {
-  max-width: 70%;
+#homepage-body  {
+  display: flex;
+  justify-content: space-between;
+}
+#problems-body {
+  flex: 8;
+  margin: 10px;
+  /* width: 80%; */
+}
+#addproblem-body {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 10px;
+  flex: 2;
+  /* width: 20%; */
 }
 li {
   padding: 7px;
@@ -61,9 +75,56 @@ li {
   padding-top: 0; /* Pushes the CONTENT down to make space for the fixed nav */
   background-color: #1e1e1e;
 }
+.addproblem-title{
+background-color: #555;
+  padding: 10px ;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 20px;
+  color: whitesmoke;
 
+} .addproblem-statement{
+background-color: #555;
+min-height: 50%;
+  padding: 10px ;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: none;
+  color: whitesmoke;
+}
+.addproblem-time-limit{
+  background-color: #555;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: whitesmoke;
+}
+.addproblem-memory-limit {
+  background-color: #555;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: whitesmoke;
+}
+#submitProblem {
+  align-self: center;
+  padding: 10px;
+  border: 0.5px solid rgba(10, 8, 8, 0.812);
+  border-radius: 10px;
+  color: green;
+  background-color: #141313a4;
+  width: 60%;
+}
+
+#submitProblem:hover{
+  background-color: green;
+  color:#1e1e1e;
+}
 /* --- 4. Left Pane: Problem Statement --- */
 .problems-container {
+  
   flex: 1; /* Takes up 1 part of the available space */
   padding: 20px;
   border-right: 2px solid #333;

@@ -1,0 +1,32 @@
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Node dependencies for BOTH frontend and backend
+/frontend/node_modules
+/backend/myapp/node_modules
+
+# Build output from Vite
+/frontend/dist
+
+# Environment variables (NEVER commit these)
+.env
+.env.*
+*.local
+
+# Temporary files from the worker
+/backend/myapp/temp
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

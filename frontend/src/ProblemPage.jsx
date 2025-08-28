@@ -29,7 +29,7 @@ function ProblemPage() {
     
     
 
-    const handleSubmit = async (code) => {
+    const handleSubmit = async () => {
         setStatus("Pending");
         const submission = {
         problem_id: problem_id,
@@ -87,7 +87,7 @@ function ProblemPage() {
                     status == "Submitting..."? (<button className="submit">
                     Submitting...
                     </button>)
-                    : (<button className="submit" onClick={() => handleSubmit(code)}>
+                    : (<button className="submit" onClick={() => handleSubmit}>
                     Submit
                     </button>)
                     }
@@ -99,7 +99,8 @@ function ProblemPage() {
                 <textarea 
                     className="submitted-code-input" 
                     id="submitted-code-input" 
-                    value={code} 
+                    placeholder='Start typing...'
+                    value={code}
                     onChange={(e) => {setCode(e.target.value)
                     }}
                 />

@@ -84,7 +84,7 @@ async function addProblem(problem){ // inserts problem in db
                 statement: problem.statement,
                 time_limit: problem.time_limit,
                 memory_limit: problem.memory_limit,
-            }).returning('problem_id'); return result;
+            }).returning('*'); return result;
         }
         catch(error){
             console.error("Failed to add problem", error);
@@ -98,7 +98,7 @@ app.post('/add-problem', async (req, res) => {
     try {
     const problem = req.body;
     const newProblemId = await addProblem(problem);
-    res.json({ problem_id: newProblemId[0].problem_id});
+    res.json(newProblemId[0]);
     }catch(error){
         res.status(500).json({error: "unable to add problem"});
     }

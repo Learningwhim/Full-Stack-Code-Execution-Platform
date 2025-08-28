@@ -8,11 +8,11 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: 'db.sqlmlvqpcekvxlkjusle.supabase.co',   // copy from Supabase dashboard
-      port: 5432,
-      user: 'postgres',
-      password: '*&r67.wKfsCQ4bk', // from settings
-      database: 'postgres',
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       ssl: { rejectUnauthorized: false, require: true  }
     }
   },

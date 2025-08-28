@@ -53,13 +53,6 @@ async function processSubmissions(){
                             const code_output = stdout.trim().replace(/\r\n/g, '\n');
                             
                             const expected_output = (testcase.expected_output).trim().replace(/\r\n/g, '\n');
-                            // ADD THESE LOGS
-                                console.log("--- JUDGE DEBUG ---");
-                                console.log("Raw STDOUT from code:", `"${stdout}"`);
-                                console.log("Raw Expected from DB:", `"${testcase.expected_output}"`);
-                                console.log("Normalized STDOUT:", `"${code_output}"`);
-                                console.log("Normalized Expected:", `"${expected_output}"`);
-                                console.log("-------------------");
                             if(code_output == expected_output){
                                 await db('submissions').update({status: 'Accepted'}).where('submission_id', current_job.submission_id);
                             }
@@ -78,7 +71,6 @@ async function processSubmissions(){
                 await db('submissions').update({status: status, output: output}).where('submission_id', current_job.submission_id);
             }
         }
-
         }
         else if(job.length == 0) console.log("No Pending submissions found");
     }catch(error){
