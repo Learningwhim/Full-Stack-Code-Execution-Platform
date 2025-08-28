@@ -2,8 +2,9 @@ const express = require('express');
 const db = require('./database');
 const cors = require('cors');
 const app = express();
+const PORT = process.env.PORT || 3000;
 app.use(cors()); // allows all origins
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: `${import.meta.env.VITE_API_BASE_URL}:5173` }));
 
 
 app.use(express.json());
@@ -104,6 +105,7 @@ app.post('/add-problem', async (req, res) => {
     }
     
 });
-app.listen(3000, () => {
+
+app.listen(PORT, () => {
     console.log("Server is running on port 3000");
 });
