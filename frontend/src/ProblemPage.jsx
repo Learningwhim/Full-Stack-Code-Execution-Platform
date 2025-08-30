@@ -14,7 +14,7 @@ function ProblemPage() {
     useEffect(() => {
             const fetchProblem = async() => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/problems/${problem_id}`);
+                const response = await fetch(`http://localhost:3000/problems/${problem_id}`);
                 const data = await response.json();
                 setProblem(data);
                 setLoading(false);
@@ -39,7 +39,7 @@ function ProblemPage() {
     }
         try{
             setStatus("Submitting...");
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/submit`, {
+            const response = await fetch(`http://localhost:3000/submit`, {
             method: "POST",
             headers: {"Content-type":"application/json"},
             body: JSON.stringify(submission),
@@ -54,7 +54,7 @@ function ProblemPage() {
         if(!submissionId) return;
         
         const intervalId = setInterval(async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/status/${submissionId}`);
+            const response = await fetch(`http://localhost:3000/status/${submissionId}`);
             const data = await response.json();
             const newStatus = data.status;
             console.log(newStatus);
@@ -77,6 +77,9 @@ function ProblemPage() {
                         <header>
                             <h3 className="problem-title" value={problem.title}>{problem.problem_id}. {problem.title}</h3>
                             <p className="problem-description" value={problem.description}>Problem Description: {problem.statement}</p>
+                            <p>#include {`<iostream>`}</p><br/>
+                            <p>using namespace std;
+                            {`int main() {  return 0; }`}</p>
                         </header>
                     
                 }
@@ -87,7 +90,7 @@ function ProblemPage() {
                     status == "Submitting..."? (<button className="submit">
                     Submitting...
                     </button>)
-                    : (<button className="submit" onClick={() => handleSubmit}>
+                    : (<button className="submit" onClick={handleSubmit}>
                     Submit
                     </button>)
                     }

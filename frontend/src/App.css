@@ -49,23 +49,38 @@ body {
   justify-content: space-between;
 }
 #problems-body {
-  flex: 8;
+  flex: 6;
   margin: 10px;
   /* width: 80%; */
 }
 #addproblem-body {
+  /* align-items: center; */
+  /* justify-content: center; */
   display: flex;
-  flex-direction: column;
   margin: 10px;
   padding: 10px;
-  flex: 2;
+  flex: 2.5;
   /* width: 20%; */
+}
+h2 {
+  padding: 10px;
 }
 li {
   padding: 7px;
-  border: 1px solid white;
+  border: 0.5px solid rgb(80, 77, 77);
 }
-
+form {
+  margin: 10px;
+  border: #555;
+}
+#form-1 {
+  flex: 1;
+  
+}
+#form-2{
+  flex: 1;
+  margin-top: 10px;
+}
 /* --- 3. Main Page Layout Container --- */
 /* This container holds the two columns (problem and submission). */
 .problems-page-body {
@@ -75,24 +90,33 @@ li {
   padding-top: 0; /* Pushes the CONTENT down to make space for the fixed nav */
   background-color: #1e1e1e;
 }
-.addproblem-title{
+.add-container {
+  display: flex;
+  /* justify-content: center; */
+  border: auto;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.add-small{
 background-color: #555;
   padding: 10px ;
+  width: 100%;
   border-radius: 5px;
   border: none;
   margin-bottom: 20px;
   color: whitesmoke;
 
-} .addproblem-statement{
+} .add-medium{
 background-color: #555;
 min-height: 50%;
+width: 100%;
   padding: 10px ;
   border-radius: 10px;
   margin-bottom: 20px;
   border: none;
   color: whitesmoke;
 }
-.addproblem-time-limit{
+.add-small{
   background-color: #555;
   padding: 10px;
   border: none;
@@ -100,7 +124,7 @@ min-height: 50%;
   margin-bottom: 20px;
   color: whitesmoke;
 }
-.addproblem-memory-limit {
+.add-small {
   background-color: #555;
   padding: 10px;
   border: none;
@@ -115,16 +139,14 @@ min-height: 50%;
   border-radius: 10px;
   color: green;
   background-color: #141313a4;
-  width: 60%;
+  width: 100%;
 }
-
 #submitProblem:hover{
   background-color: green;
   color:#1e1e1e;
 }
 /* --- 4. Left Pane: Problem Statement --- */
 .problems-container {
-  
   flex: 1; /* Takes up 1 part of the available space */
   padding: 20px;
   border-right: 2px solid #333;
