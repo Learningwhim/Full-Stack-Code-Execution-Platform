@@ -3,7 +3,7 @@ const {exec} = require('child_process');
 const execPromise = util.promisify(exec);
 const fs = require('fs');
 const path = require('path');
-const db = require('./database');
+const db = require('./db/database');
 
 async function processSubmissions(){
     try { // take 1 row while updating its status in fcfs priority
@@ -25,6 +25,7 @@ async function processSubmissions(){
             const inputFilePath = path.join(submission_dir, 'input.txt');
             fs.writeFileSync(inputFilePath, (testcase.input || '').trim().replace(/\r\n/g, '\n'));
              const dockerCommand = `docker run --rm --memory=${problem.memory_limit}m -v "${submission_dir}":/app -w /app --network none cpp-runner sh -c "g++ main.cpp -o main && ./main  < input.txt"`;
+             //const dockerCommand = `docker run --rm cpp-runner echo "hello"`;
             console.log("--- FILE VERIFICATION ---");
                 try {
                     const files = fs.readdirSync(submission_dir);
@@ -62,6 +63,7 @@ async function processSubmissions(){
                     }
                         
             catch(error){
+                console.error("Error arha idhar"+ error);
                 let status = 'Compilation Error';
                 let output = error.stderr;
                 if (error.message.includes('Time Limit Exceeded')) {

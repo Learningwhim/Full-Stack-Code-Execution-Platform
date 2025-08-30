@@ -43,9 +43,7 @@ body {
   min-width: 320px;
   height: calc(100vh - 20px);
 }
-ul {
-  border: 1px solid white;
-}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
