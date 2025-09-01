@@ -1,17 +1,15 @@
-/* --- 1. Global Reset & Foundation --- */
-/* These rules should be at the very top of your main CSS file. */
-/* They establish a consistent base for the entire application. */
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Make the html, body, and your root div take up the full available height. */
-/* This creates a stable foundation for percentage-based heights later on. */
 html, body, #root {
   height: 100%;
   width: 100%;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #242424;
   color: rgba(255, 255, 255, 0.87);
@@ -23,8 +21,6 @@ a {
   text-decoration: none;
 }
 
-/* --- 2. Fixed Navigation Bar --- */
-/* This is taken out of the normal document flow and stays at the top. */
 nav {
   position: fixed;
   top: 0;
@@ -48,6 +44,117 @@ body {
   display: flex;
   justify-content: space-between;
 }
+/* background & container */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color:#1a1a1a; /* dark background like LC dark mode */
+  font-family: 'Fira Code', monospace;
+}
+
+/* central card */
+.auth-card {
+  background-color:#2e2e2e; /* slightly lighter dark card */
+  padding: 3rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 320px;
+  text-align: center;
+}
+
+/* title & subtitle */
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f5f5f5;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  color: #cfcfcf;
+}
+
+/* buttons */
+.auth-button {
+  width: 100%;
+  padding: 0.85rem 0;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+}
+
+/* login button (orange accent like LC) */
+.login-button {
+  font-family: 'Fira Code', monospace;
+  padding: 10px;
+  width: 100px;
+  border-radius: 10px;
+  background-color: #000000;
+  color: #c2c2c2;
+}
+
+.login-button:hover {
+  background-color: #0e9b92;
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(243,156,18,0.4);
+}#login-button {
+  padding: 10px;
+  width: 100px;
+  font-weight: 600;
+  border-radius: 10px;
+  font-family: 'Fira Code', monospace;
+  background-color: #000000;
+  color: #c2c2c2;
+}
+
+#login-button:hover {
+  background-color: #0e9b92;
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(243,156,18,0.4);
+}
+
+/* register button (green accent) */
+.register-button {
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100px;
+  background-color: #000000;
+  color: #b8b8b8;
+}
+
+.register-button:hover {
+  background-color: #7827ae;
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(46,204,113,0.4);
+}
+#register-button {
+  padding: 10px;
+  font-weight: 600;
+  font-family: 'Fira Code', monospace;
+  border-radius: 10px;
+  width: 100px;
+  background-color: #000000;
+  color: #b8b8b8;
+}
+
+#register-button:hover {
+  background-color: #7827ae;
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(46,204,113,0.4);
+}
+
 #problems-body {
   flex: 6;
   margin: 10px;
