@@ -10,6 +10,8 @@ function ProblemPage() {
     const [status, setStatus] = useState("Pending");
     const [code, setCode] = useState("");
     const [language, setLanguage] = useState("cpp");
+    const [timeComplexity, setTimeComplexity] =useState(null);
+    const [spaceComplexity, setSpaceComplexity] =useState(null);
     const { problem_id } = useParams();
     useEffect(() => {
             const fetchProblem = async() => {
@@ -33,21 +35,43 @@ function ProblemPage() {
         setStatus("Pending");
         const submission = {
         problem_id: problem_id,
-        user_id: "Guest",
         code: code,
         language: language,
     }
         try{
             setStatus("Submitting...");
+            const token = localStorage.getItem('authToken');
             const response = await fetch(`http://localhost:3000/submit`, {
             method: "POST",
-            headers: {"Content-type":"application/json"},
+            headers: {"Content-type":"application/json",
+                        "Authorization": `Bearer ${token}`
+            },
             body: JSON.stringify(submission),
             });
             const data = await response.json();
             setSubmissionId(data.submission_id);
         }catch(err){
             console.error(err);
+        }
+    }
+    const analyzeComplexity = async() => {
+        try {
+            const response = await fetch('http://localhost:3000/analyze',{
+                method: "POST",
+                headers: {"Content-type":"application/json"},
+                body: JSON.stringify({code: code})
+            });
+            if(response){
+                const data = await response.json();
+                setTimeComplexity(data.timeComplexity);
+                setSpaceComplexity(data.spaceComplexity);
+            }
+            else {
+                setTimeComplexity("error");
+                setSpaceComplexity("error");
+            }
+        }catch(error){
+            console.error("Failed to fetch complexity");
         }
     }
     useEffect( () => {
@@ -80,7 +104,12 @@ function ProblemPage() {
                             <p>#include {`<iostream>`}</p><br/>
                             <p>using namespace std;
                             {`int main() {  return 0; }`}</p>
+                            <br/>
+                            <button onClick={analyzeComplexity}>Analyze Complexity</button><br/>
+                            <p className="complexity">Time Complexity: {timeComplexity}</p>
+                            <p className="complexity">Space Complexity: {spaceComplexity}</p>
                         </header>
+                        
                     
                 }
                 </div>

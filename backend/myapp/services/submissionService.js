@@ -11,8 +11,15 @@ async function addSubmission(submission) {
         return result;
     }
     catch(error){
-        console.error("server error");
+        console.error(error);
         throw error;
     }
 }
-module.exports = addSubmission;
+
+async function getSubmissionStatusService (submission_id) {
+  return await db("submissions")
+    .where({ submission_id: submission_id })
+    .select("status")
+    .first();
+};
+module.exports = {addSubmission, getSubmissionStatusService};

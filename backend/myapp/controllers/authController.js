@@ -29,13 +29,13 @@ const loginUser = async(req, res) => {
                 const secret = process.env.JWT_SECRET;
                 const userDetails = {user_id: user.user_id, email: email};
                 const token = jwt.sign(userDetails,secret);
-                res.status(200).send(token);
+                res.status(200).json({token});
             }else{
-                res.status(401).json({error: "Incorrect password"});
+                res.status(401).json({error: "Invalid email or password"});
             }
         }else{
             console.error("User not found");
-            res.status(401).json({error: "Reference error"});
+            res.status(401).json({error: "Invalid email or password"});
         }
         
     }catch(error){

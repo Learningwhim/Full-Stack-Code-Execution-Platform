@@ -1,12 +1,13 @@
 import {useState, useEffect} from 'react'
 import Button from '../components/Button'
-
+import { useNavigate } from 'react-router-dom';
 function RegisterPage(){
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
     const handleRegisterSubmit = async (event) => {
         try {
             event.preventDefault();
@@ -24,9 +25,11 @@ function RegisterPage(){
             if(!response.ok){
                 const errorData = await response.json();
                 setError(errorData.message);
-            }else
-            console.log("Resgitration Succesfull")
-
+            }else{
+            console.log("Resgitration Succesfull");
+            alert("Resgitration Succesfull");
+            navigate('/auth/login');
+            }
         }catch(error){
             setError("Resgistration failed. Please try again later")
         }finally{
