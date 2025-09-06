@@ -10,7 +10,7 @@ exports.up = function(knex) {
     submissions.text('code');
     submissions.string('language');
     submissions.string('status').defaultTo("Pending");
-    submissions.timestamp(true, true);
+    submissions.timestamps(true, true);
   });
 };
 

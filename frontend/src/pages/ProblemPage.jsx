@@ -101,9 +101,9 @@ function ProblemPage() {
                         <header>
                             <h3 className="problem-title" value={problem.title}>{problem.problem_id}. {problem.title}</h3>
                             <p className="problem-description" value={problem.description}>Problem Description: {problem.statement}</p>
-                            <p>#include {`<iostream>`}</p><br/>
+                            <p>#include {`<iostream>`}</p>
                             <p>using namespace std;
-                            {`int main() {  return 0; }`}</p>
+                            {`\nint main(){\n\t  return 0;\n }`}</p>
                             <br/>
                             <button onClick={analyzeComplexity}>Analyze Complexity</button><br/>
                             <p className="complexity">Time Complexity: {timeComplexity}</p>
