@@ -1,34 +1,42 @@
-import { useState, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
 
-function ProblemPage() {
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom';
 
-    const [problem, setProblem] = useState((null));
+function RoomPage() {
     const [isLoading, setLoading] = useState(true);
     const [submissionId, setSubmissionId] = useState();
     const [error, setError] = useState(null);
     const [status, setStatus] = useState("Pending");
     const [code, setCode] = useState("");
     const [language, setLanguage] = useState("cpp");
-    const [timeComplexity, setTimeComplexity] =useState(null);
-    const [spaceComplexity, setSpaceComplexity] =useState(null);
-    const { problem_id } = useParams();
+    const { roomCode } = useParams();
+    const [roomData, setRoomData] = useState(null);
+    const [ currProblemIndex, setCurrentProblemIndex] = useState(0);
+    const token = localStorage.getItem('authToken');
+
     useEffect(() => {
-            const fetchProblem = async() => {
-            try {
-                const response = await fetch(`http://localhost:3000/problems/${problem_id}`);
+            const fetchRoomData = async() => {
+            try { 
+                
+                const response = await fetch(`http://localhost:3000/rooms/${roomCode}`,{
+                    method: "GET",
+                    headers: {"Authorization": `Bearer ${token}`,
+                              "Content-Type": "application/json"}
+                });
                 const data = await response.json();
-                setProblem(data);
+                setRoomData(data);
+                console.log(data);
                 setLoading(false);
             }catch(error){
-                setError("Failed to fetch Problem");
+                setError("Failed to fetch roomData");
+                }
             }
-            }
-            fetchProblem();
+            fetchRoomData();
         
         
-    }, [problem_id]);
-    
+    }, [roomCode, token]);
+    //const currentProblem = null;
+    //if(roomData !== null) currentProblem = roomData.problems[currentProblemIndex];
     
 
     const handleSubmit = async () => {
@@ -54,26 +62,6 @@ function ProblemPage() {
             console.error(err);
         }
     }
-    const analyzeComplexity = async() => {
-        try {
-            const response = await fetch('http://localhost:3000/analyze',{
-                method: "POST",
-                headers: {"Content-type":"application/json"},
-                body: JSON.stringify({code: code})
-            });
-            if(response.ok){
-                const data = await response.json();
-                setTimeComplexity(data.timeComplexity);
-                setSpaceComplexity(data.spaceComplexity);
-            }
-            else {
-                setTimeComplexity("error");
-                setSpaceComplexity("error");
-            }
-        }catch(error){
-            console.error("Failed to fetch complexity");
-        }
-    }
     useEffect( () => {
         if(!submissionId) return;
         
@@ -91,23 +79,23 @@ function ProblemPage() {
     },[submissionId]);
 
     return(
-        <>
-            <div className="problems-page-body">
+    <>
+    <div className="problems-page-body">
                 <div className="problems-container">
                 {
                     isLoading ? (<p className="Loading">Loading...</p>)
                     : error ? (<p className="fetch-error">{error}</p>)
                     : 
                         <header>
+                            <button onClick={handlePrev}>prev</button>
+                            <button onClick={handleNext}>next</button>
                             <h3 className="problem-title" value={problem.title}>{problem.problem_id}. {problem.title}</h3>
                             <p className="problem-description" value={problem.description}>Problem Description: {problem.statement}</p>
                             <p>#include {`<iostream>`}</p>
                             <p>using namespace std;
                             {`\nint main(){\n\t  return 0;\n }`}</p>
                             <br/>
-                            <button onClick={analyzeComplexity}>Analyze Complexity</button><br/>
-                            <p className="complexity">Time Complexity: {timeComplexity}</p>
-                            <p className="complexity">Space Complexity: {spaceComplexity}</p>
+                            
                         </header>
                         
                     
@@ -139,8 +127,6 @@ function ProblemPage() {
 
                 </div>
             </div>
-        </>
-    );
+    </>);
 }
-
-export default ProblemPage;
+export default RoomPage

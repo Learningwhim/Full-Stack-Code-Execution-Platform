@@ -5,6 +5,7 @@ const submissionRoutes = require('./routes/submissions');
 const testcaseRoutes = require('./routes/testcases');
 const authRoutes = require('./routes/users');
 const analysisRoute = require('./routes/analysis');
+const roomRoutes = require('./routes/rooms');
 const app = express();
 const PORT =  3000;
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(submissionRoutes);
 app.use(testcaseRoutes);
 app.use('/auth', authRoutes);
 app.use(analysisRoute);
+app.use('/rooms', roomRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -1,7 +1,9 @@
-import {useState, useEffect} from 'react'
-import Button from '../components/Button'
+import {useState, useEffect} from 'react';
+import { useAuth } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 function LoginPage(){
+    const { login } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,15 +25,17 @@ function LoginPage(){
                     password: password
                 })
             });
-            
             if(!response.ok){
-                
                 const errorData = await response.json();
                 setError(errorData.message);
             }else{
             const data = await response.json();
             const token = data.token;
+            const decoded = jwtDecode(token);
+            console.log(decoded);
             localStorage.setItem('authToken', token);
+            const userData =  data.user;
+            login(decoded);
             console.log("Login Succesfull")
             alert("Login Succesfull");
             navigate('/');

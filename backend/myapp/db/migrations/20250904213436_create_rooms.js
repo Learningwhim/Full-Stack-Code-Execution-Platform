@@ -1,25 +1,35 @@
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
- */exports.up = async function (knex) {
-  const exists = await knex.schema.hasTable("rooms");
-  if (!exists) {
-    return knex.schema.createTable("rooms", (table) => {
-      table.increments("room_id").primary();
-      table.string("room_code", 255);
-      table.integer("creator_id");
-      table
-        .timestamp("created_at")
-        .notNullable()
-        .defaultTo(knex.fn.now());
-      table
-        .timestamp("updated_at")
-        .notNullable()
-        .defaultTo(knex.fn.now());
-    });
-  }
+ */
+exports.up = async function(knex) {
+  await knex.schema.createTable('rooms', rooms => {
+    rooms.increments('room_id');
+    rooms.string('room_code');
+    rooms.integer('creator_id').references('users.user_id');
+    rooms.timestamps(true, true);
+  });
+  await knex.schema.createTable('room_problems',room => {
+    room.increments('room_problems_id');
+    room.integer('room_id').references('rooms.room_id');
+    room.integer('problem_id').references('problems.problem_id');
+  });
+  await knex.schema.createTable('room_participants',participant => {
+    participant.increments('participant_id');
+    participant.integer('room_id').references('rooms.room_id');
+    participant.integer('user_id').references('users.user_id');
+    participant.integer('score').defaultTo(0);
+    participant.integer('total_time');
+  });
 };
 
-exports.down = function (knex) {
-  return knex.schema.dropTableIfExists("rooms");
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.down = async function(knex) {
+     await knex.schema.dropTable('room_participants');
+    await knex.schema.dropTable('room_problems');
+  await knex.schema.dropTable('rooms');
+  
 };

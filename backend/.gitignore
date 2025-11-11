@@ -9,7 +9,10 @@ lerna-debug.log*
 # Node dependencies for BOTH frontend and backend
 /frontend/node_modules
 /backend/myapp/node_modules
+# Dependencies
+node_modules/
 
+# Environment variables
 # Build output from Vite
 /frontend/dist
 

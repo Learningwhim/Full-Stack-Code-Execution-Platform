@@ -45,6 +45,20 @@ body {
   justify-content: space-between;
 }
 /* background & container */
+
+loginBtn {
+  background-color: #333;
+  padding: 7px;
+  color: rgb(207, 110, 110);
+}
+#logoutBtn {
+  margin-left: 10px;
+  border-radius: 20px;
+  padding: 7px;
+  color: red;
+  background-color: #333;
+  border: none;
+}
 .auth-container {
   display: flex;
   justify-content: center;
@@ -346,4 +360,14 @@ select {
 .submitted-code-input::-webkit-scrollbar-thumb {
   background-color: #555;
   border-radius: 4px;
+}
+
+.toggle-buttons {
+  padding: 10px;
+  border: none;
+
+}
+
+.section.create-room, .section.join-room {
+  border-top-left-radius: 0;
 }

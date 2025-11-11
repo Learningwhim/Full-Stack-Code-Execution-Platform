@@ -9,7 +9,7 @@ async function createRoomService(problemIds,user_id){
         const response = await trx('rooms').insert({
             room_code: room_code,
             creator_id: user_id
-        });
+        }).returning('*').first();
         
         await Promise.all(problemIds.map((problem_id) => 
             trx('room_problems').insert({
@@ -23,7 +23,58 @@ async function createRoomService(problemIds,user_id){
         throw error;
     }
     });
-    
 }
 
-module.exports = createRoomService;
+async function joinRoomService(user_id, roomCode){
+    try {
+        const room = await db('rooms').where({room_code: roomCode}).first();
+        if(room){
+            const alreadyexists = await db('room_participants').where({room_id: room.room_id, user_id: user_id}).first();
+            if(!alreadyexists)
+            await db('room_participants').insert({
+                room_id: room.room_id,
+                user_id: user_id
+            });
+        }
+        else{
+            
+            throw new Error("room not found");
+        }
+        return room;
+    }catch(error){
+        console.error(error);
+        throw error;
+    }
+}
+async function getRoomService(roomCode){
+    try{
+        const room = await db('rooms').where({room_code: roomCode}).first();
+        if(!room) return null;
+        const [room_problems, room_participants] = await Promise.all([
+        db('room_problems').where({room_id: room.room_id}).join('problems','room_problems.problems_id', 'problems.problem_id').select(
+                                                                                                                                    'problems.title',
+                                                                                                                                    'problems.statement',
+                                                                                                                                    'problems.time_limit',
+                                                                                                                                    'problems.memory_limit'
+                                                                                                                                    ),
+        db('room_participants').where({ room_id: room.room_id }).join('users', 'room_participants.user_id', 'users.user_id').select(
+                                                                                                        'room_participants.participant_id',
+                                                                                                        'room_participants.score',
+                                                                                                        'room_participants.total_time',
+                                                                                                        'users.email'
+                                                                                                    )
+        ]);                                                                                           
+        const roomConcatenated = {
+            roomDetails: room,
+            room_problems: room_problems,
+            room_participants: room_participants
+        }                                                                                                
+        return roomConcatenated;
+    }catch(error){
+        console.error("room not found");
+        throw error;
+    }
+}
+
+
+module.exports = {createRoomService,joinRoomService, getRoomService};
