@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-
+import Leaderboard from '../components/Leaderboard';
 function RoomPage() {
     const [isLoading, setLoading] = useState(true);
     const [submissionId, setSubmissionId] = useState();
@@ -13,18 +13,26 @@ function RoomPage() {
     const [roomData, setRoomData] = useState(null);
     const [ currProblemIndex, setCurrentProblemIndex] = useState(0);
     const token = localStorage.getItem('authToken');
+    const [roomProblems, setRoomProblems] = useState([]);
+    const [roomParticipants, setRoomParticipants] = useState([]);
+    const [problemsLength, setProblemLength] = useState(null);
+    const [sidebar, setSidebar] = useState(false);
 
     useEffect(() => {
+        if(!roomCode || !token) return;
             const fetchRoomData = async() => {
             try { 
-                
+
                 const response = await fetch(`http://localhost:3000/rooms/${roomCode}`,{
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`,
                               "Content-Type": "application/json"}
                 });
                 const data = await response.json();
-                setRoomData(data);
+                setRoomData(data.roomDetails);
+                setRoomProblems(data.room_problems);
+                setProblemLength(roomProblems.length);
+                setRoomParticipants(data.room_participants);
                 console.log(data);
                 setLoading(false);
             }catch(error){
@@ -37,7 +45,27 @@ function RoomPage() {
     }, [roomCode, token]);
     //const currentProblem = null;
     //if(roomData !== null) currentProblem = roomData.problems[currentProblemIndex];
-    
+    const handleNext = async () => {
+        try{
+            const totalProblems = roomProblems.length;
+            console.log(currProblemIndex);
+            if(currProblemIndex >= totalProblems)  setCurrentProblemIndex(0);
+            else setCurrentProblemIndex(currProblemIndex+1);
+            console.log(currProblemIndex);
+        }catch(error){
+            console.error("handle next problem occured");
+        }
+    }
+    const handlePrev = async () => {
+        try{
+            console.log(currProblemIndex);
+            if(currProblemIndex <= 0)  return;
+            else setCurrentProblemIndex(currProblemIndex-1);
+            console.log(currProblemIndex);
+        }catch(error){
+            console.error("handle next problem occured");
+        }
+    }
 
     const handleSubmit = async () => {
         setStatus("Pending");
@@ -82,15 +110,26 @@ function RoomPage() {
     <>
     <div className="problems-page-body">
                 <div className="problems-container">
+                    <button className="leaderboardOpen" onClick={() => setSidebar(!sidebar)}>
+                        {'<<'}
+                    </button>
+
+                    <div className={`sidebar ${sidebar ? "open" : ""}`}>
+                        <br/>
+                            <button id="sidebarHeader"onClick={() => setSidebar(!sidebar)}>
+                                <p id="closeSidebar">❌</p>
+                            </button>
+                            <Leaderboard/>
+                    </div>
                 {
                     isLoading ? (<p className="Loading">Loading...</p>)
                     : error ? (<p className="fetch-error">{error}</p>)
                     : 
                         <header>
-                            <button onClick={handlePrev}>prev</button>
-                            <button onClick={handleNext}>next</button>
-                            <h3 className="problem-title" value={problem.title}>{problem.problem_id}. {problem.title}</h3>
-                            <p className="problem-description" value={problem.description}>Problem Description: {problem.statement}</p>
+                            <button className="togglebtn" onClick={handlePrev}>{'< prev'}</button>
+                            <button className="togglebtn" onClick={handleNext}>{' next >'}</button>
+                            {(roomProblems) ? <h3 className="problem-title" value={currProblemIndex}>{currProblemIndex+1}. {roomProblems[currProblemIndex].title}</h3> : <h3>loading</h3>}
+                            {(roomProblems) ? <p className="problem-description" value={roomProblems[currProblemIndex].description}>Problem Description: {roomProblems[currProblemIndex].statement}</p> : <p>loading</p>}
                             <p>#include {`<iostream>`}</p>
                             <p>using namespace std;
                             {`\nint main(){\n\t  return 0;\n }`}</p>

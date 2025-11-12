@@ -5,5 +5,5 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/create', authMiddleware, createRoomController);
 router.post('/join', authMiddleware, joinRoomController);
-router.get('/:room_code', authMiddleware, getRoomController);
+router.get('/:room_code',authMiddleware, getRoomController);
 module.exports = router; 

@@ -371,3 +371,61 @@ select {
 .section.create-room, .section.join-room {
   border-top-left-radius: 0;
 }
+
+.togglebtn {
+  background-color: #555;
+  border: none;
+  justify-content: center;
+  margin: 3px;
+  padding: 5px;
+  border-radius: 8px;;
+}
+.togglebtn:hover {
+  color: #b8b8b8;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background: #222;
+  color: white;
+  padding: 20px;
+
+  /* animation */
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+.leaderboardOpen:hover {
+
+}
+.leaderboardOpen{
+  padding: 8px;
+  background-color: #0e9b92;
+  border: none;
+  color: wheat;
+  border-radius: 20px;
+  margin: 3px;
+}
+#sidebarHeader {
+  float: right;
+  display: flex;
+  background-color:#222;
+  border: none;
+}
+#closeSidebar {
+  float: right;
+  margin-top: 5px;
+  text-align: right;
+  right: 100px;
+  background-color:#222;
+  border: none;
+}
+#closeSidebar:hover {
+  background-color: white;
+}

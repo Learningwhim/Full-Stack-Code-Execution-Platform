@@ -5,11 +5,12 @@ const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklm
 async function createRoomService(problemIds,user_id){
     return await db.transaction(async trx => {
         try {
+        console.log("controller");
         const room_code = nanoid();
-        const response = await trx('rooms').insert({
+        const [response] = await trx('rooms').insert({
             room_code: room_code,
             creator_id: user_id
-        }).returning('*').first();
+        }).returning('*');
         
         await Promise.all(problemIds.map((problem_id) => 
             trx('room_problems').insert({
@@ -17,6 +18,7 @@ async function createRoomService(problemIds,user_id){
                 problem_id: problem_id,
             })
         ));
+        console.log(room_code);
         return room_code;
     }catch(error){
         console.error('Failed to create room');
@@ -48,10 +50,12 @@ async function joinRoomService(user_id, roomCode){
 }
 async function getRoomService(roomCode){
     try{
+        console.log("service hit hua");
         const room = await db('rooms').where({room_code: roomCode}).first();
         if(!room) return null;
         const [room_problems, room_participants] = await Promise.all([
-        db('room_problems').where({room_id: room.room_id}).join('problems','room_problems.problems_id', 'problems.problem_id').select(
+        db('room_problems').where({room_id: room.room_id}).join('problems','room_problems.problem_id', 'problems.problem_id').select(
+                                                                                                                                    'room_problems.problem_id',
                                                                                                                                     'problems.title',
                                                                                                                                     'problems.statement',
                                                                                                                                     'problems.time_limit',

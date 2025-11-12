@@ -27,10 +27,11 @@ const joinRoomController = async (req, res) => {
 }
 const getRoomController = async (req , res) =>{
     try{
+        console.log("Request hit hua");
         const {room_code} = req.params;
-        const room = await getRoomService(room_code);
-        if(room){
-            
+        const roomConcatenated = await getRoomService(room_code);
+        if(roomConcatenated){
+            res.status(200).json(roomConcatenated);
         }else{
             res.status(404).json({error: "Invalid room code"})
         }
