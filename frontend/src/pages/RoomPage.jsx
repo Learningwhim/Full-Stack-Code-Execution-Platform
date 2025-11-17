@@ -2,7 +2,10 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import Leaderboard from '../components/Leaderboard';
+import { useAuth } from '../context/AuthContext';
+
 function RoomPage() {
+    const user = useAuth();
     const [isLoading, setLoading] = useState(true);
     const [submissionId, setSubmissionId] = useState();
     const [error, setError] = useState(null);
@@ -15,15 +18,14 @@ function RoomPage() {
     const token = localStorage.getItem('authToken');
     const [roomProblems, setRoomProblems] = useState([]);
     const [roomParticipants, setRoomParticipants] = useState([]);
-    const [problemsLength, setProblemLength] = useState(null);
     const [sidebar, setSidebar] = useState(false);
-
+    const [ProblemLength, setProblemLength] = useState(0);
     useEffect(() => {
         if(!roomCode || !token) return;
             const fetchRoomData = async() => {
             try { 
 
-                const response = await fetch(`http://localhost:3000/rooms/${roomCode}`,{
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/rooms/${roomCode}`,{
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`,
                               "Content-Type": "application/json"}
@@ -37,6 +39,7 @@ function RoomPage() {
                 setLoading(false);
             }catch(error){
                 setError("Failed to fetch roomData");
+                console.log(error);
                 }
             }
             fetchRoomData();
@@ -69,15 +72,17 @@ function RoomPage() {
 
     const handleSubmit = async () => {
         setStatus("Pending");
+        const current_problem = roomProblems[currProblemIndex];
         const submission = {
-        problem_id: problem_id,
+        problem_id: current_problem.problem_id,
         code: code,
         language: language,
+        roomCode: roomCode,
     }
         try{
             setStatus("Submitting...");
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`http://localhost:3000/submit`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/submit`, {
             method: "POST",
             headers: {"Content-type":"application/json",
                         "Authorization": `Bearer ${token}`
@@ -94,7 +99,7 @@ function RoomPage() {
         if(!submissionId) return;
         
         const intervalId = setInterval(async () => {
-            const response = await fetch(`http://localhost:3000/status/${submissionId}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/status/${submissionId}`);
             const data = await response.json();
             const newStatus = data.status;
             console.log(newStatus);
@@ -105,7 +110,19 @@ function RoomPage() {
         }, 1000);
         return () => clearInterval(intervalId);
     },[submissionId]);
+    useEffect( () => {
+        try {
+            const socket = io(import.meta.env.VITE_API_URL);
+            
+            socket.emit("join-room", { roomCode : roomCode, user_id : user?.id });
 
+            return () => {
+                socket.disconnect();
+            }
+        }catch(error){
+
+        }
+    },[roomCode, user]);
     return(
     <>
     <div className="problems-page-body">
@@ -119,7 +136,7 @@ function RoomPage() {
                             <button id="sidebarHeader"onClick={() => setSidebar(!sidebar)}>
                                 <p id="closeSidebar">❌</p>
                             </button>
-                            <Leaderboard/>
+                            <Leaderboard participants={roomParticipants}/>
                     </div>
                 {
                     isLoading ? (<p className="Loading">Loading...</p>)

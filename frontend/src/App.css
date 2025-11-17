@@ -429,3 +429,12 @@ select {
 #closeSidebar:hover {
   background-color: white;
 }
+
+.leaderboard-list {
+  display: grid;
+  grid-template-columns: 30px 120px 30px 30px;
+  padding: 2px 0;
+}
+.leaderboard-elements {
+  text-align: center;
+}

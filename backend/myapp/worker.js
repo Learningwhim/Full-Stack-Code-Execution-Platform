@@ -44,7 +44,7 @@ async function processSubmissions(){
                             new Promise((_, reject) => {
                                 setTimeout(() => {
                                 reject(new Error('Time Limit Exceeded'));
-                                }, problem.time_limit * 1000);
+                                }, (problem.time_limit * 1000)+500);
                             })
                             ]);
                         if(stderr){

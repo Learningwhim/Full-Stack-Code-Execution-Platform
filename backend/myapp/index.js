@@ -1,14 +1,12 @@
 const express = require('express');
-const http = require('http');
-const app = express();
+// const http = require('http'); since hamne ye sab socker-server me shift kar diya
+// const app = express();
 const PORT =  3000;
-const { Server } = require('socket.io');
-const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "*"
-    }
-});
+const { app, io, server} = require('./socket-server');
+// const { Server } = require('socket.io');
+// const server = http.createServer(app);
+// const io = new Server(server);
+
 const cors = require('cors');
 const problemRoutes = require('./routes/problems');
 const submissionRoutes = require('./routes/submissions');
@@ -22,23 +20,23 @@ app.use(cors());
 app.use(express.json());
  app.use(express.urlencoded({extended: true}));
 app.use('/problems', problemRoutes);
-app.use('/api',submissionRoutes);
+app.use(submissionRoutes);
 app.use(testcaseRoutes);
 app.use('/auth', authRoutes);
 app.use(analysisRoute);
 app.use('/rooms', roomRoutes);
-io.on("connection", (socket) => {
-    console.log("socket connected: ", socket.id);
+// io.on("connection", (socket) => {
+//     console.log("socket connected: ", socket.id);       since hamne ye sab socker-server me shift kar diya
 
-    socket.on("join-room", ({userId, roomCode}) => {
-        socket.data.userId = userId;
-        socket.join(roomCode);
-        console.log("user ", userId, " Joined room: ",room);
-    });
-    socket.on("disconnect", () => {
-        console.log("Disconnected ");
-    });
-});
+//     socket.on("join-room", ({userId, roomCode}) => {
+//         socket.data.userId = userId;
+//         socket.join(roomCode);
+//         console.log("user ", userId, " Joined room: ",roomCode);
+//     });
+//     socket.on("disconnect", () => {
+//         console.log("Disconnected ");
+//     });
+// });
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

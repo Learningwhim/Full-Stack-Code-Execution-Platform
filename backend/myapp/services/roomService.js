@@ -11,7 +11,6 @@ async function createRoomService(problemIds,user_id){
             room_code: room_code,
             creator_id: user_id
         }).returning('*');
-        
         await Promise.all(problemIds.map((problem_id) => 
             trx('room_problems').insert({
                 room_id: response.room_id,

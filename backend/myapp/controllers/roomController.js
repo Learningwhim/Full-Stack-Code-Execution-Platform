@@ -36,6 +36,7 @@ const getRoomController = async (req , res) =>{
             res.status(404).json({error: "Invalid room code"})
         }
     }catch(error){
+        console.log("error");
         res.status(500).json({error: "failed to get room"})
     }
 }
