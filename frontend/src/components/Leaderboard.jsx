@@ -36,7 +36,7 @@ function Leaderboard({participants}) {
         {participants.map((participant, index) => (
             <li className="leaderboard-list" key={participant.participant_id}>
                 <span className="leaderboard-elements">{index+1}.</span>
-                <span >{participant?.email?? `Guest${index+1}`}</span>
+                <span >{(participant?.email.slice(0, 7)+'...')?? `Guest${index+1}`}</span>
                 <span className="leaderboard-elements">{participant?.score ?? 0 }</span>
                 {/* <span className="leaderboard-elements">{participant?.total_time ?? 0}</span> */}
             </li>
