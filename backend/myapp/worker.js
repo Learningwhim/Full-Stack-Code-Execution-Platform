@@ -27,7 +27,7 @@ async function processSubmissions(){
             fs.writeFileSync(filepath, (current_job.code).replace(/\\n/g, '\n'));
             const inputFilePath = path.join(submission_dir, 'input.txt');
             fs.writeFileSync(inputFilePath, (testcase.input || '').trim().replace(/\r\n/g, '\n'));
-             const dockerCommand = `docker run --rm --memory=${problem.memory_limit}m -v "${submission_dir}":/app -w /app --network none cpp-runner sh -c "g++ main.cpp -o main && ./main  < input.txt"`;
+             const dockerCommand = `docker run --rm --memory=${problem.memory_limit}m -v "${submission_dir}":/app -w /app --network none learningwhim/cpp-runner:latest sh -c "g++ main.cpp -o main && ./main  < input.txt"`;
              //const dockerCommand = `docker run --rm cpp-runner echo "hello"`;
             console.log("--- FILE VERIFICATION ---");
                 try {
@@ -78,7 +78,7 @@ async function processSubmissions(){
 
                                         console.log("EMITTING → Room:", current_job.roomCode);
                                         const roomCode = current_job.roomCode;
-                                        const response = fetch(`${import.meta.env.VITE_API_URL}/broadcastUpdate`, {
+                                        const response = fetch(`${process.env.VITE_API_URL}/broadcastUpdate`, {
                                             method: 'POST',
                                             headers: {'Content-type': 'application/json'},
                                             body: JSON.stringify({roomCode, newLeaderboardData})
