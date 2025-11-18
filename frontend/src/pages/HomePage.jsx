@@ -27,7 +27,8 @@ function HomePage() {
         fetchProblems();
     }, []);
 
-    const handleProblemSubmit = async () => {
+    const handleProblemSubmit = async (e) => {
+        
         const problem = {
             title: problem_title,
             statement: problem_statement,
@@ -35,6 +36,7 @@ function HomePage() {
             memory_limit: problem_memory_limit
         }
         try {
+            e.preventDefault();
             console.log("recieved req call fe");
             const response = await fetch(`${import.meta.env.VITE_API_URL}/add-problem`, {
                 method: "POST",
