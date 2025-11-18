@@ -134,65 +134,87 @@ function RoomPage() {
     },[roomCode, user]);
     return(
     <>
-    <div className="problems-page-body">
-                <div className="problems-container">
-                    <button className="leaderboardOpen" onClick={() => setSidebar(!sidebar)}>
-                        {'<<'}
-                    </button>
+    <div className="room-body">
+  <div className="room-left">
 
-                    <div className={`sidebar ${sidebar ? "open" : ""}`}>
-                        <br/>
-                            <button id="sidebarHeader"onClick={() => setSidebar(!sidebar)}>
-                                <p id="closeSidebar">❌</p>
-                            </button>
-                            <Leaderboard participants={roomParticipants}/>
-                    </div>
-                {
-                    isLoading ? (<p className="Loading">Loading...</p>)
-                    : error ? (<p className="fetch-error">{error}</p>)
-                    : 
-                        <header>
-                            <button className="togglebtn" onClick={handlePrev}>{'< prev'}</button>
-                            <button className="togglebtn" onClick={handleNext}>{' next >'}</button>
-                            {(roomProblems) ? <h3 className="problem-title" value={currProblemIndex}>{currProblemIndex+1}. {roomProblems[currProblemIndex].title}</h3> : <h3>loading</h3>}
-                            {(roomProblems) ? <p className="problem-description" value={roomProblems[currProblemIndex].description}>Problem Description: {roomProblems[currProblemIndex].statement}</p> : <p>loading</p>}
-                            <p>#include {`<iostream>`}</p>
-                            <p>using namespace std;
-                            {`\nint main(){\n\t  return 0;\n }`}</p>
-                            <br/>
-                            
-                        </header>
-                        
-                    
-                }
-                </div>
-                <div className="submission-container">
-                <div className="submission-header">
-                    {
-                    status == "Submitting..."? (<button className="submit">
-                    Submitting...
-                    </button>)
-                    : (<button className="submit" onClick={handleSubmit}>
-                    Submit
-                    </button>)
-                    }
-                    <p className='status'>Status: {status}</p>
-                    <select>
-                    <option label="cpp">cpp</option>
-                    </select>
-                </div>
-                <Editor language='cpp'
-                    theme="vs-dark"
-                    className="submitted-code-input" 
-                    id="submitted-code-input" 
-                    placeholder='Start typing...'
-                    value={code}
-                    onChange={(value) => setCode(value)
-                    }
-                />
+    <button
+      className="leaderboard-toggle-btn"
+      onClick={() => setSidebar(!sidebar)}
+    >
+      {'View Live Rankings'}
+    </button>
 
-                </div>
-            </div>
+    <div className={`room-sidebar ${sidebar ? "open" : ""}`}>
+      <button
+        className="room-sidebar-close"
+        onClick={() => setSidebar(false)}
+      >
+        ✖
+      </button>
+      <Leaderboard participants={roomParticipants} />
+    </div>
+
+    {isLoading ? (
+      <p>Loading...</p>
+    ) : error ? (
+      <p>{error}</p>
+    ) : (
+      <>
+        <div className="room-nav-buttons">
+          <button className="room-nav-btn" onClick={handlePrev}>{'< prev'}</button>
+          <button className="room-nav-btn" onClick={handleNext}>{'next >'}</button>
+        </div>
+
+        <h3 className="room-problem-title">
+          {currProblemIndex + 1}. {roomProblems[currProblemIndex].title}
+        </h3>
+
+        <p className="room-problem-desc">
+          {roomProblems[currProblemIndex].statement}
+        </p>
+
+        <pre>
+{`#include <iostream>
+using namespace std;
+
+int main() {
+    return 0;
+}`}
+        </pre>
+      </>
+    )}
+  </div>
+
+  <div className="room-right">
+    <div className="room-editor-header">
+      {status === "Submitting..." ? (
+        <button className="room-submit-btn">Submitting...</button>
+      ) : (
+        <button className="room-submit-btn" onClick={handleSubmit}>Submit</button>
+      )}
+
+      <p className="room-status">Status: {status}</p>
+
+      <select
+        className="room-lang-select"
+        value={language}
+        onChange={e => setLanguage(e.target.value)}
+      >
+        <option value="cpp">cpp</option>
+      </select>
+    </div>
+
+    <div className="room-editor-box">
+      <Editor
+        language="cpp"
+        theme="vs-dark"
+        value={code}
+        onChange={(value) => setCode(value)}
+      />
+    </div>
+  </div>
+</div>
+
     </>);
 }
 export default RoomPage

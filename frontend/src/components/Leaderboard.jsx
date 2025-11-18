@@ -30,18 +30,20 @@ function Leaderboard({participants}) {
     //console.log(participants);
     return(
         <>
-        <h3>Leaderboard</h3>
-        <br/>
-        <ul>
-        {participants.map((participant, index) => (
-            <li className="leaderboard-list" key={participant.participant_id}>
-                <span className="leaderboard-elements">{index+1}.</span>
-                <span >{(participant?.email.slice(0, 7)+'...') || `Guest${index+1}`}</span>
-                <span className="leaderboard-elements">{participant?.score ?? 0 }</span>
-                {/* <span className="leaderboard-elements">{participant?.total_time ?? 0}</span> */}
-            </li>
+        <h3 className="lb-title">Leaderboard</h3>
+      <ul className="lb-list">
+        {sortedParticipants.map((participant, index) => (
+          <li className="lb-row" key={participant.participant_id}>
+            <span className="lb-rank">{index + 1}.</span>
+            <span className="lb-name">
+              {participant?.email
+                ? participant.email.split("@")[0].slice(0, 10) + "..."
+                : `Guest${index + 1}`}
+            </span>
+            <span className="lb-score">{participant?.score ?? 0}</span>
+          </li>
         ))}
-        </ul>
+      </ul>
         </>
     );
 }

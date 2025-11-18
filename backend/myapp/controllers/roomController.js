@@ -15,7 +15,9 @@ const joinRoomController = async (req, res) => {
     try {
         const user_id = req.user.user_id;
         const roomCode = req.body.roomCode;
+        console.log(user_id, roomCode);
         const room = await joinRoomService(user_id, roomCode);
+        
         if(room) {
             res.status(201).json({roomCode: roomCode});
         }

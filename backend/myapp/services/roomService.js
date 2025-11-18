@@ -29,6 +29,7 @@ async function createRoomService(problemIds,user_id){
 async function joinRoomService(user_id, roomCode){
     try {
         const room = await db('rooms').where({room_code: roomCode}).first();
+        console.log(room);
         if(room){
             const alreadyexists = await db('room_participants').where({room_id: room.room_id, user_id: user_id}).first();
             if(!alreadyexists)

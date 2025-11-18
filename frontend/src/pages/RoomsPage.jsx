@@ -73,62 +73,83 @@ function RoomsPage() {
     }
     return (
     <div className="rooms-page">
-        <div className="tab-toggle">
-            <button className='toggle-buttons' onClick={() => setActiveTab('join') }>Join Room</button>
-            <button className='toggle-buttons' onClick={() => setActiveTab('create')}>Create Room</button>
-            {activeTab === 'create' &&(
-                <section className="section create-room">
-            <h2>Create Room</h2>
-            <p>Select questions to include in the room:</p>
-            <div className="question-list">
-              <ul type="none">{problems.map((problem) => (
-                <li key={problem.problem_id} > 
-                  <input 
-                  type="checkbox" 
+  <div className="tab-toggle">
+
+    <button className="toggle-buttons" onClick={() => setActiveTab("join")}>
+      Join Room
+    </button>
+
+    <button className="toggle-buttons" onClick={() => setActiveTab("create")}>
+      Create Room
+    </button>
+
+    {activeTab === "create" && (
+      <section className="section create-room">
+        <h2>Create Room</h2>
+        <p>Select questions to include in the room:</p>
+
+        <div className="question-list">
+          <ul>
+            {problems.map((problem) => (
+              <li key={problem.problem_id}>
+                <input
+                  type="checkbox"
                   checked={problemIds.includes(problem.problem_id)}
-                  onChange={() => handleChangeCheckbox(problem.problem_id)}>
-                </input>{problem.problem_id} {problem.title}</li>
-              ))}</ul>
-            </div>
-            <div className="actions">
-              <button onClick={handleCreateRoom} className="btn btn-primary">
-                Create Room
-              </button>
-              <span>{problemIds.length} selected</span>
-            </div>
-          </section>
-          )}
-            {activeTab === 'join' &&(
-                <section className="section join-room">
-            <h2>Join Room</h2>
-            <p>Enter a room code to join an existing room:</p>
-            <input
-              type="text"
-              onChange={(e) => setRoomCode(e.target.value)}
-              placeholder="ABC123"
-              maxLength={8}
-              className="input-code"
-            />
-            <div className="actions">
-              <button onClick={handleJoinRoom} className="btn btn-outline">
-                Join Room
-              </button>
-              <button
-                onClick={() => {
-                  navigator.clipboard && navigator.clipboard.writeText(roomCode);
-                  alert("Room code copied to clipboard (if supported)");
-                }}
-                className="btn btn-ghost">
-                Copy Code
-              </button>
-            </div>
-            <p className="tip">
-              Tip: If you are creating a room, share the generated code with participants so they can join.
-            </p>
-          </section>
-        )}
+                  onChange={() => handleChangeCheckbox(problem.problem_id)}
+                />
+                {problem.problem_id}. {problem.title}
+              </li>
+            ))}
+          </ul>
         </div>
-    </div>
+
+        <div className="actions">
+          <button onClick={handleCreateRoom} className="btn btn-primary">
+            Create Room
+          </button>
+          <span>{problemIds.length} selected</span>
+        </div>
+      </section>
+    )}
+
+    {activeTab === "join" && (
+      <section className="section join-room">
+        <h2>Join Room</h2>
+        <p>Enter a room code to join:</p>
+
+        <input
+          type="text"
+          onChange={(e) => setRoomCode(e.target.value)}
+          placeholder="123456"
+          maxLength={8}
+          className="input-code"
+        />
+
+        <div className="actions">
+          <button onClick={handleJoinRoom} className="btn btn-outline">
+            Join Room
+          </button>
+
+          <button
+            onClick={() => {
+              navigator.clipboard && navigator.clipboard.writeText(roomCode);
+              alert("Room code copied");
+            }}
+            className="btn btn-ghost"
+          >
+            Copy Code
+          </button>
+        </div>
+
+        <p className="tip">
+          Tip: Share the room code with others after creation.
+        </p>
+      </section>
+    )}
+
+  </div>
+</div>
+
   );
 }
 

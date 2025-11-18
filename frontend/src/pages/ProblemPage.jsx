@@ -105,7 +105,10 @@ function ProblemPage() {
                             <p>using namespace std;
                             {`\nint main(){\n\t  return 0;\n }`}</p>
                             <br/>
-                            <button onClick={analyzeComplexity}>Analyze Complexity</button><br/>
+                            <button className="analyze-btn" onClick={analyzeComplexity}>
+                                Analyze Complexity
+                            </button>
+                            <br/>
                             <p className="complexity">Time Complexity: {timeComplexity}</p>
                             <p className="complexity">Space Complexity: {spaceComplexity}</p>
                         </header>

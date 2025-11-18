@@ -65,69 +65,113 @@ function HomePage() {
             console.error("Failed to submit testcase");
         }
     }
-    return(
-        <div id="homepage-body">
-            <div id="problems-body">
-                
-                    {
-                        isLoading 
-                        ? <p className="loading-text">Loading...</p>
-                        : error ? (<p className="fetch-error">{error}</p>)
-                        : <ul type="none">{
-                            problems.map((problem) => (
-                            <li key={problem.problem_id}><Link to={`/ProblemPage/${problem.problem_id}`}>{problem.problem_id}. {problem.title}</Link></li>
-                        ))}
-                        </ul>
-                    }
-                
+    return (
+            <div id="homepage-body">
+                {/* LEFT PANEL */}
+                <div className="home-problems-panel">
+                <h2>Problems</h2>
+
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : (
+                    <ul style={{ listStyle: "none" }}>
+                    {problems.map((problem) => (
+                        <li
+                        key={problem.problem_id}
+                        className="problem-list-item"
+                        >
+                        <Link to={`/ProblemPage/${problem.problem_id}`}>
+                            {problem.problem_id}. {problem.title}
+                        </Link>
+                        </li>
+                    ))}
+                    </ul>
+                )}
+                </div>
+
+                {/* RIGHT PANEL */}
+                <div className="home-form-panel">
+
+                {/* ADD PROBLEM */}
+                <form onSubmit={handleProblemSubmit} className="form-card">
+                    <h2>Add Problem</h2>
+
+                    <input
+                    className="form-input"
+                    type="text"
+                    placeholder="Title"
+                    required
+                    onChange={(e) => setProblemTitle(e.target.value)}
+                    />
+
+                    <input
+                    className="form-input text-big"
+                    type="text"
+                    placeholder="Description"
+                    required
+                    onChange={(e) => setProblemStatement(e.target.value)}
+                    />
+
+                    <input
+                    className="form-input"
+                    type="number"
+                    placeholder="Time limit (ms)"
+                    required
+                    onChange={(e) => setProblemTL(Number(e.target.value))}
+                    />
+
+                    <input
+                    className="form-input"
+                    type="number"
+                    placeholder="Memory limit (MB)"
+                    required
+                    onChange={(e) => setProblemML(Number(e.target.value))}
+                    />
+
+                    <button type="submit" className="form-submit">
+                    Submit
+                    </button>
+                </form>
+
+                {/* ADD TESTCASE */}
+                <form onSubmit={handleTestcaseSubmit} className="form-card">
+                    <h2>Add Testcase</h2>
+
+                    <input
+                    className="form-input"
+                    type="number"
+                    placeholder="Problem ID"
+                    required
+                    onChange={(e) => setTestcaseId(e.target.value)}
+                    />
+
+                    <input
+                    className="form-input"
+                    type="text"
+                    placeholder="Input"
+                    required
+                    onChange={(e) => setTestcaseInp(e.target.value)}
+                    />
+
+                    <input
+                    className="form-input text-big"
+                    type="text"
+                    placeholder="Expected Output"
+                    required
+                    onChange={(e) => setTestcaseEO(e.target.value)}
+                    />
+
+                    <button type="submit" className="form-submit">
+                    Submit
+                    </button>
+                </form>
+
+                </div>
             </div>
-            <div id="addproblem-body">
-                    <div className="add-container">
-                        <form onSubmit={handleProblemSubmit} id="form-1"> 
-                            <h2>Add Problem</h2>       
-                        <input 
-                            className="add-small" 
-                            type="text" 
-                            placeholder="title" 
-                            required
-                            onChange={(e) => setProblemTitle(e.target.value)} 
-                        />
-                        <input 
-                            className="add-medium" 
-                            type="text" 
-                            placeholder="description" 
-                            required
-                            onChange={(e) => setProblemStatement(e.target.value)} 
-                        />
-                        <input 
-                            className="add-small" 
-                            type="number" 
-                            placeholder="time limit (ms)" 
-                            required
-                            onChange={(e) => setProblemTL(Number(e.target.value))} 
-                        />
-                        <input 
-                            className="add-small" 
-                            type="number" 
-                            placeholder="memory limit (MB)" 
-                            required
-                            onChange={(e) => setProblemML(Number(e.target.value))} 
-                        />
-                        <button id="submitProblem" type="submit">Submit</button>
-                        </form>
-                    </div>
-                    <div className="add-container">
-                        <form onSubmit={handleTestcaseSubmit} id="form-2">
-                            <h2>Add Testcase</h2>
-                            <input  required className="add-small" type="integer" placeholder='problem id' onChange={(e) => setTestcaseId(e.target.value)}/>
-                            <input required className="add-small" type="text" placeholder='input' onChange={(e) => setTestcaseInp(e.target.value)}/>
-                            <input required className="add-medium" type="text" placeholder='expected output' onChange={(e) => setTestcaseEO(e.target.value)}/>
-                            <button id='submitProblem' type="submit">Submit</button>
-                        </form>
-                    </div>
-            </div>
-        </div>
-    );
+            );
+
 }
 
 export default HomePage;

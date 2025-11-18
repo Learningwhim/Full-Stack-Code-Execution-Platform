@@ -1,3 +1,6 @@
+/*======================================================
+   GLOBAL RESET + BASE (Shadcn-friendly)
+====================================================== */
 
 * {
   box-sizing: border-box;
@@ -5,311 +8,187 @@
   padding: 0;
 }
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  font-weight: 600;
-  font-family: 'Fira Code', monospace;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #242424;
-  color: rgba(255, 255, 255, 0.87);
-  overflow: hidden; /* Disables scrolling on the main page body */
+:root {
+  /* Shadcn-like design tokens */
+  --background: #0f0f0f;
+  --foreground: #ffffff;
+  --card: #1f1f1f;
+  --card-foreground: #ffffff;
+
+  --muted: #2a2a2a;
+  --muted-foreground: #aaaaaa;
+
+  --border: #333;
+
+  --primary: #7bdbec;
+  --primary-foreground: white;
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --radius: 10px;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow: hidden;
+}
+
+/* Links */
 a {
-  color: rgba(255, 255, 255, 0.87);
+  color: inherit;
   text-decoration: none;
 }
+
+
+/* ======================================================
+   NAVBAR
+====================================================== */
 
 nav {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  text-align: center;
-  height: 40px; /* Fixed height */
-  line-height: 40px; /* Vertically centers the text */
+  height: 40px;
+  line-height: 40px;
   padding: 0 20px;
+  text-align: center;
+
   background: #1a1a1a;
   border-bottom: 1px solid #333;
+
   z-index: 10;
 }
+
 body {
-  margin: 0;
-  padding: 0;
-  margin-top: 40px; /* navbar ki height ke barabar */
+  margin-top: 40px;
+}
 
-}
-#homepage-body  {
-  display: flex;
-  justify-content: space-between;
-}
-/* background & container */
 
-loginBtn {
-  background-color: #333;
-  padding: 7px;
-  color: rgb(207, 110, 110);
-}
-#logoutBtn {
-  margin-left: 10px;
-  border-radius: 20px;
-  padding: 7px;
-  color: red;
-  background-color: #333;
-  border: none;
-}
+/* ======================================================
+   AUTH PAGE
+====================================================== */
+
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color:#1a1a1a; /* dark background like LC dark mode */
-  font-family: 'Fira Code', monospace;
+  height: 100vh;
+
+  background-color: #1a1a1a;
 }
 
-/* central card */
 .auth-card {
-  background-color:#2e2e2e; /* slightly lighter dark card */
+  background-color: var(--card);
   padding: 3rem 2.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  border-radius: var(--radius);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1.5rem;
   width: 320px;
   text-align: center;
 }
 
-/* title & subtitle */
 .auth-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #f5f5f5;
 }
 
 .auth-subtitle {
-  font-size: 1rem;
   color: #cfcfcf;
 }
 
-/* buttons */
+/* Buttons */
 .auth-button {
   width: 100%;
   padding: 0.85rem 0;
-  border-radius: 0.8rem;
-  font-weight: 600;
-  font-family: 'Fira Code', monospace;
+  border-radius: var(--radius);
   border: none;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  text-transform: uppercase;
-}
-
-/* login button (orange accent like LC) */
-.login-button {
-  font-family: 'Fira Code', monospace;
-  padding: 10px;
-  width: 100px;
-  border-radius: 10px;
-  background-color: #000000;
-  color: #c2c2c2;
-}
-
-.login-button:hover {
-  background-color: #0e9b92;
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(243,156,18,0.4);
-}#login-button {
-  padding: 10px;
-  width: 100px;
   font-weight: 600;
-  border-radius: 10px;
-  font-family: 'Fira Code', monospace;
-  background-color: #000000;
-  color: #c2c2c2;
+  transition: all 0.2s ease;
 }
 
+/* Login */
+.login-button,
+#login-button {
+  background-color: black;
+  padding: 10px;
+  border-radius: var(--radius);
+  color: #c2c2c2;
+}
+.login-button:hover,
 #login-button:hover {
   background-color: #0e9b92;
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(243,156,18,0.4);
 }
 
-/* register button (green accent) */
-.register-button {
-  font-weight: 600;
-  font-family: 'Fira Code', monospace;
-  padding: 10px;
-  border-radius: 10px;
-  width: 100px;
-  background-color: #000000;
-  color: #b8b8b8;
-}
-
-.register-button:hover {
-  background-color: #7827ae;
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(46,204,113,0.4);
-}
+/* Register */
+.register-button,
 #register-button {
+  background-color: black;
   padding: 10px;
-  font-weight: 600;
-  font-family: 'Fira Code', monospace;
-  border-radius: 10px;
-  width: 100px;
-  background-color: #000000;
+  border-radius: var(--radius);
   color: #b8b8b8;
 }
-
+.register-button:hover,
 #register-button:hover {
   background-color: #7827ae;
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(46,204,113,0.4);
 }
 
-#problems-body {
-  flex: 6;
-  margin: 10px;
-  /* width: 80%; */
-}
-#addproblem-body {
-  /* align-items: center; */
-  /* justify-content: center; */
-  display: flex;
-  margin: 10px;
-  padding: 10px;
-  flex: 2.5;
-  /* width: 20%; */
-}
-h2 {
-  padding: 10px;
-}
-li {
-  padding: 7px;
-  border: 0.5px solid rgb(80, 77, 77);
-}
-form {
-  margin: 10px;
-  border: #555;
-}
-#form-1 {
-  flex: 1;
-  
-}
-#form-2{
-  flex: 1;
-  margin-top: 10px;
-}
-/* --- 3. Main Page Layout Container --- */
-/* This container holds the two columns (problem and submission). */
+
+/* ======================================================
+   PROBLEMS PAGE CONTAINER
+====================================================== */
+
 .problems-page-body {
-  display: flex; /* Arranges children (the two panes) in a row */
+  display: flex;
   width: 100%;
-  height: 100vh; /* CRITICAL FIX: Use 100vh to fill the ENTIRE viewport height */
-  padding-top: 0; /* Pushes the CONTENT down to make space for the fixed nav */
+  height: 100vh;
   background-color: #1e1e1e;
 }
-.add-container {
-  display: flex;
-  /* justify-content: center; */
-  border: auto;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-.add-small{
-background-color: #555;
-  padding: 10px ;
-  width: 100%;
-  border-radius: 5px;
-  border: none;
-  margin-bottom: 20px;
-  color: whitesmoke;
 
-} .add-medium{
-background-color: #555;
-min-height: 50%;
-width: 100%;
-  padding: 10px ;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border: none;
-  color: whitesmoke;
-}
-.add-small{
-  background-color: #555;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: whitesmoke;
-}
-.add-small {
-  background-color: #555;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: whitesmoke;
-}
-#submitProblem {
-  align-self: center;
-  padding: 10px;
-  border: 0.5px solid rgba(10, 8, 8, 0.812);
-  border-radius: 10px;
-  color: green;
-  background-color: #141313a4;
-  width: 100%;
-}
-#submitProblem:hover{
-  background-color: green;
-  color:#1e1e1e;
-}
-/* --- 4. Left Pane: Problem Statement --- */
 .problems-container {
-  flex: 1; /* Takes up 1 part of the available space */
+  flex: 1;
   padding: 20px;
-  border-right: 2px solid #333;
-  overflow-y: auto; /* Allows ONLY this container to scroll if content is too long */
+  border-right: 2px solid var(--border);
+  overflow-y: auto;
 }
 
 .problem-title {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 10px;
-  text-align: left;
 }
 
 .problem-description {
-  font-size: smaller;
-  font-weight: 200;
-  text-align: left;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
-/* --- 5. Right Pane: Submission Area --- */
+
+/* ======================================================
+   SUBMISSION PANEL
+====================================================== */
+
 .submission-container {
-  flex: 1; /* Takes up 1 part of the available space */
+  flex: 1;
   padding: 12px;
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  flex-direction: column;
   background-color: #242424;
 }
 
-/* Header within the submission pane */
 .submission-header {
   display: flex;
   justify-content: space-between;
-  flex-shrink: 0;
   align-items: center;
-  margin-bottom: 12px;
-  flex-shrink: 0; /* Prevents the header from shrinking */
-}
-
-.status {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #ddd;
 }
 
 select {
@@ -318,42 +197,32 @@ select {
   color: white;
   border: 1px solid #555;
   border-radius: 4px;
-  margin: 0 8px;
 }
 
 .submit {
   background-color: #333;
-  color: rgb(43, 181, 31);
-  border: none;
+  color: var(--success);
   padding: 6px 14px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  font-weight: bold;
   border-radius: 6px;
-  transition: background 0.2s ease-in-out;
+  border: none;
+  cursor: pointer;
 }
-
 .submit:hover {
   background-color: #444;
 }
 
-/* The code editor text area */
+/* Code Editor Area */
 .submitted-code-input {
-  height: 60%; /* This makes the text area fill all remaining vertical space */
-   overflow-y: auto;    /* vertical scroll if content exceeds */
-  overflow-x: auto;
-  white-space: pre;
-  tab-size: 2;
+  flex: 1;
   background-color: #2e2e2e;
   color: #f5f5f5;
-  border: none;
-  outline: none;
   padding: 10px;
+  border-radius: var(--radius);
   font-family: monospace;
-  font-size: 0.9rem;
   resize: none;
-  border-radius: 8px;
+  overflow: auto;
 }
+
 .submitted-code-input::-webkit-scrollbar {
   width: 8px;
 }
@@ -362,27 +231,47 @@ select {
   border-radius: 4px;
 }
 
-.toggle-buttons {
+
+/* ======================================================
+   ADD PROBLEM FORM
+====================================================== */
+
+.add-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-small,
+.add-medium {
+  background-color: #555;
   padding: 10px;
   border: none;
-
+  border-radius: var(--radius);
+  color: white;
 }
 
-.section.create-room, .section.join-room {
-  border-top-left-radius: 0;
+.add-medium {
+  min-height: 50%;
 }
 
-.togglebtn {
-  background-color: #555;
-  border: none;
-  justify-content: center;
-  margin: 3px;
-  padding: 5px;
-  border-radius: 8px;;
+#submitProblem {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid #111;
+  background-color: #141313a4;
+  color: var(--success);
 }
-.togglebtn:hover {
-  color: #b8b8b8;
+#submitProblem:hover {
+  background-color: var(--success);
+  color: #1e1e1e;
 }
+
+
+/* ======================================================
+   SIDEBAR / LEADERBOARD
+====================================================== */
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -393,48 +282,947 @@ select {
   color: white;
   padding: 20px;
 
-  /* animation */
   transform: translateX(-100%);
   transition: transform 0.3s ease;
 }
-
 .sidebar.open {
   transform: translateX(0);
 }
-.leaderboardOpen:hover {
 
-}
-.leaderboardOpen{
+.leaderboardOpen {
   padding: 8px;
   background-color: #0e9b92;
+  border-radius: 20px;
   border: none;
   color: wheat;
-  border-radius: 20px;
-  margin: 3px;
 }
-#sidebarHeader {
-  float: right;
-  display: flex;
-  background-color:#222;
-  border: none;
-}
+
 #closeSidebar {
-  float: right;
-  margin-top: 5px;
-  text-align: right;
-  right: 100px;
-  background-color:#222;
+  background: none;
   border: none;
-}
-#closeSidebar:hover {
-  background-color: white;
+  float: right;
+  color: white;
 }
 
 .leaderboard-list {
   display: grid;
   grid-template-columns: 30px 120px 30px 30px;
-  padding: 2px 0;
 }
 .leaderboard-elements {
   text-align: center;
+}
+/* ======================================================
+   HOMEPAGE — MODERNIZED PANELS
+====================================================== */
+
+#homepage-body {
+  display: flex;
+  gap: 1rem;
+  height: calc(100vh - 40px);
+  overflow: hidden;
+  padding: 1rem;
+  background: #111;
+}
+
+/* -------------------- LEFT: PROBLEMS LIST -------------------- */
+
+.home-problems-panel {
+  flex: 1.8;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.home-problems-panel h2 {
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.problem-list-item {
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: #2c2c2c;
+  margin-bottom: 10px;
+  transition: 0.15s ease;
+  border: 1px solid #333;
+}
+
+.problem-list-item:hover {
+  background: #3a3a3a;
+  border-color: var(--primary);
+  transform: translateX(6px);
+}
+
+
+/* -------------------- RIGHT: ADD PROBLEM PANEL -------------------- */
+
+.home-form-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.form-card {
+  background: var(--card);
+  padding: 1.3rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.form-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Inputs */
+
+.form-input {
+  background: #2e2e2e;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: var(--radius);
+  width: 100%;
+  margin-bottom: 15px;
+  color: white;
+  transition: 0.15s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #353535;
+}
+
+/* The big description textbox */
+.form-input.text-big {
+  min-height: 90px;
+}
+
+/* Submit button */
+
+.form-submit {
+  width: 100%;
+  padding: 10px;
+  color: rgb(54, 204, 54);
+  background: #0f1010;
+  border-radius: var(--radius);
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.form-submit:hover {
+  color: #0f1010;
+  background: rgb(54, 204, 54);
+}
+
+
+/* -------------------- RESPONSIVE -------------------- */
+
+@media (max-width: 900px) {
+  #homepage-body {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .home-problems-panel {
+    flex: none;
+    height: auto;
+  }
+
+  .home-form-panel {
+    flex: none;
+  }
+}
+/* ======================================================
+   NAVIGATION BAR — Shadcn Style
+====================================================== */
+
+.nav-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 56px;
+
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* BRAND */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-logo {
+  width: 32px;
+  height: 32px;
+
+  background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 1rem;
+  color: black;
+}
+
+.nav-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ddd;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.15s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: white;
+}
+
+/* AUTH */
+.nav-auth {
+  display: flex;
+  align-items: center;
+}
+
+.nav-btn-outline {
+  padding: 6px 16px;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3b82f6;
+
+  transition: 0.15s ease;
+}
+
+.nav-btn-outline:hover {
+  background: #3b82f6;
+  color: black;
+}
+
+.nav-btn-solid {
+  padding: 6px 16px;
+  background: #ef4444;
+  border-radius: 8px;
+  border: none;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+
+  transition: 0.15s ease;
+}
+
+.nav-btn-solid:hover {
+  background: #dc2626;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .nav-links {
+    display: none;
+  }
+}
+/* ======================================================
+   PROBLEM PAGE — Modern Shadcn-Style Layout
+====================================================== */
+
+.problems-page-body {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 56px);
+  background: #111;
+  overflow: hidden;
+  padding-top: 56px; /* navbar space */
+}
+
+/* LEFT PANEL — PROBLEM DESCRIPTION */
+.problems-container {
+  flex: 1.2;
+  padding: 24px;
+  overflow-y: auto;
+
+  background: var(--card);
+  border-right: 1px solid var(--border);
+}
+
+.problems-container header {
+  line-height: 1.6;
+}
+
+.problem-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.problem-description {
+  margin-top: 4px;
+  margin-bottom: 18px;
+  font-size: 0.95rem;
+  color: #d1d1d1;
+}
+
+/* Code sample block */
+.problems-container code,
+.problems-container p {
+  font-family: "Fira Code", monospace;
+  white-space: pre-wrap;
+}
+
+.complexity {
+  margin-top: 8px;
+  color: #38bdf8;
+  font-weight: 500;
+}
+
+/* Analyze Button */
+.analyze-btn {
+  padding: 8px 14px;
+  background: #0ea5e9;
+  color: black;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.analyze-btn:hover {
+  background: #0284c7;
+}
+
+/* RIGHT PANEL — CODE EDITOR */
+.submission-container {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  background: #181818;
+}
+
+/* Submit Row */
+.submission-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.submit {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  background: #10b981;
+  color: #0a0a0a;
+  transition: 0.2s ease;
+}
+.submit:hover {
+  background: #0d966a;
+}
+
+/* Status */
+.status {
+  color: #cfcfcf;
+  font-size: 0.9rem;
+}
+
+select {
+  background: #222;
+  border: 1px solid #444;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* Code textarea */
+.submitted-code-input {
+  flex: 1;
+  background: #1f1f1f !important;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+  color: #f3f3f3;
+  font-family: "Fira Code", monospace;
+  font-size: 0.95rem;
+  resize: none;
+  outline: none;
+}
+.submitted-code-input:focus {
+  border-color: #3b82f6;
+}
+
+/* Scrollbar */
+.submitted-code-input::-webkit-scrollbar {
+  width: 8px;
+}
+.submitted-code-input::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .problems-page-body {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .problems-container {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+/* ======================================================
+   ROOM PAGE — Clean Shadcn Style
+====================================================== */
+
+.room-body {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 56px);
+  background: #111;
+  overflow: hidden;
+  padding-top: 56px;
+}
+
+/* LEFT PANEL */
+.room-left {
+  flex: 1.1;
+  padding: 22px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Problem Title */
+.room-problem-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.room-problem-desc {
+  color: #d1d1d1;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+/* Prev/Next Buttons */
+.room-nav-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.room-nav-btn {
+  padding: 6px 12px;
+  background: #2f2f2f;
+  border-radius: 8px;
+  border: 1px solid #444;
+  color: #ddd;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 0.85rem;
+}
+.room-nav-btn:hover {
+  background: #3b3b3b;
+  border-color: #aaa;
+}
+
+/* Code Snippet Styling */
+.room-left code,
+.room-left pre,
+.room-left p {
+  font-family: "Fira Code", monospace;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* ======================================================
+   RIGHT PANEL (EDITOR)
+====================================================== */
+.room-right {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  background: #181818;
+}
+
+/* Header (Submit + Status + Dropdown) */
+.room-editor-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Submit Button */
+.room-submit-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #10b981;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: black;
+  transition: 0.2s ease;
+}
+.room-submit-btn:hover {
+  background: #0d966a;
+}
+
+/* Status */
+.room-status {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Language Dropdown */
+.room-lang-select {
+  padding: 6px 10px;
+  border-radius: 7px;
+  background: #222;
+  border: 1px solid #444;
+  color: white;
+}
+
+/* Monaco Editor wrapper */
+.room-editor-box {
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+/* ======================================================
+   LEADERBOARD SIDEBAR
+====================================================== */
+.leaderboard-toggle-btn {
+  position: absolute;
+  top: 15px;
+  right: -60px;
+
+  padding: 8px 14px;
+  background: #0ea5e9;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+.leaderboard-toggle-btn:hover {
+  background: #0284c7;
+}
+
+.room-sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 260px;
+  height: calc(100vh - 56px);
+
+  background: #1a1a1a;
+  padding: 20px;
+
+  transform: translateX(-100%);
+  transition: 0.25s ease;
+  overflow-y: auto;
+}
+.room-sidebar.open {
+  transform: translateX(0);
+}
+
+/* Close Button */
+.room-sidebar-close {
+  text-align: right;
+  border: none;
+  background: none;
+  color: #ccc;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .room-body {
+    flex-direction: column;
+    height: auto;
+  }
+  .room-sidebar {
+    top: 56px;
+  }
+}
+/* ======================================================
+   ROOMS PAGE — Modern Shadcn UI
+====================================================== */
+
+.rooms-page {
+  padding-top: 56px;
+  min-height: 100vh;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  padding: 80px 20px;
+  color: white;
+}
+
+.tab-toggle {
+  background: #1c1c1c;
+  padding: 24px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 700px;
+  border: 1px solid #333;
+}
+
+.toggle-buttons {
+  background: #222;
+  border: 1px solid #444;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #ddd;
+  margin-right: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.toggle-buttons:hover {
+  background: #333;
+  border-color: #666;
+}
+
+.section {
+  margin-top: 24px;
+  background: #181818;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #333;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.section p {
+  margin-bottom: 16px;
+  color: #cfcfcf;
+}
+
+.question-list {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.question-list::-webkit-scrollbar {
+  width: 6px;
+}
+.question-list::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.question-list ul {
+  list-style: none;
+}
+
+.question-list li {
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #222;
+  display: flex;
+  gap: 10px;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-primary {
+  background: #0ea5e9;
+  color: black;
+  border: none;
+}
+.btn-primary:hover {
+  background: #0284c7;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #666;
+  color: #ddd;
+}
+.btn-outline:hover {
+  background: #333;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #999;
+}
+.btn-ghost:hover {
+  color: white;
+}
+
+.input-code {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: #222;
+  border: 1px solid #444;
+  color: white;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.tip {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+/* ======================================================
+   LEADERBOARD COMPONENT
+====================================================== */
+
+.lb-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.lb-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lb-row {
+  display: grid;
+  grid-template-columns: 30px 1fr 40px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: #222;
+  border: 1px solid #333;
+  font-size: 0.9rem;
+}
+
+.lb-row:nth-child(1) {
+  border-color: #eab308;
+}
+.lb-row:nth-child(2) {
+  border-color: #9ca3af;
+}
+.lb-row:nth-child(3) {
+  border-color: #b45309;
+}
+
+.lb-rank {
+  text-align: left;
+  opacity: 0.9;
+}
+
+.lb-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-score {
+  text-align: right;
+  font-weight: 700;
+  color: #4ade80;
+}
+.leaderboard-toggle-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;   /* keep it inside the panel */
+  padding: 8px 14px;
+  background: #0ea5e9;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  z-index: 50;
+  transition: 0.2s ease;
+}
+.leaderboard-toggle-btn:hover {
+  background: #0284c7;
+}
+
+
+.room-sidebar {
+  z-index: 100; /* <-- above content */
+}
+
+.room-sidebar-close {
+  z-index: 110;
+}
+
+/* ======================================================
+   LOGIN PAGE — Modern Shadcn Premium Auth
+====================================================== */
+
+.auth-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #0f0f0f, #111);
+}
+
+.auth-card {
+  width: 360px;
+  padding: 2rem;
+  border-radius: 14px;
+
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  animation: fadeUp 0.4s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px);}
+  to   { opacity: 1; transform: translateY(0);}
+}
+
+.auth-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+
+  background: #262626;
+  border: 1px solid #333;
+  color: white;
+
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: 0.15s ease;
+}
+
+.auth-input:focus {
+  border-color: #0ea5e9;
+  background: #2f2f2f;
+}
+
+#login-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+
+  background: #0ea5e9;
+  border: none;
+  color: black;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#login-button:hover {
+  background: #0284c7;
+}
+
+.auth-card h3 {
+  margin-top: 12px;
+  color: #ccc;
+}
+
+.auth-card p {
+  font-size: 0.85rem;
+  color: #888;
 }

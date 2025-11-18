@@ -12,13 +12,27 @@ import {useAuth}  from './context/AuthContext.jsx';
 function App() {
     const { user, logout } = useAuth();
   return (
-    <>
-          <nav>
-            <Link to='/'>Home </Link>
-            <Link to='/rooms'>Rooms</Link>
-            {!user ? (<Link to='/auth'> Login/Register </Link>) : <button id='logoutBtn' onClick={logout}>Logout</button>}
-            
-          </nav>
+          <>
+                <nav className="nav-root">
+        <div className="nav-inner">
+
+
+          <div className="nav-links">
+            <Link to="/" className="nav-link">Home</Link>
+            <Link to="/rooms" className="nav-link">Rooms</Link>
+          </div>
+
+          <div className="nav-auth">
+            {!user ? (
+              <Link to="/auth" className="nav-btn-outline">Login / Register</Link>
+            ) : (
+              <button className="nav-btn-solid" onClick={logout}>Logout</button>
+            )}
+          </div>
+
+        </div>
+      </nav>
+
           <Routes>
             <Route path='/' element={<HomePage/>} />
             <Route path='/ProblemPage/:problem_id' element={<ProblemPage/>} />
