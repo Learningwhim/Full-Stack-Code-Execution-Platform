@@ -117,7 +117,7 @@ function RoomPage() {
             if (!user) {
                 return; 
             }
-            const socket = io('http://localhost:3000',  {
+            const socket = io(`${import.meta.env.VITE_API_URL}`,  {
                 transports: ["websocket"]});
             socket.emit("join-room", { roomCode : roomCode, user_id : user?.user_id });
                 console.log("hello world");
