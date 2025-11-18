@@ -17,7 +17,7 @@ const authMiddleware = require('./middleware/authMiddleware');
 const roomRoutes = require('./routes/rooms');
 const broadcastRoute = require('./routes/broadcast');
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: `${CLIENT_ORIGIN_URL}`,
     methods: ["GET", "POST"]
 }));
 app.use(express.json());
