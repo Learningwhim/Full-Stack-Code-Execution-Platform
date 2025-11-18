@@ -78,7 +78,7 @@ async function processSubmissions(){
 
                                         console.log("EMITTING → Room:", current_job.roomCode);
                                         const roomCode = current_job.roomCode;
-                                        const response = fetch(``${VITE_API_URL}/broadcastUpdate``, {
+                                        const response = fetch(`${import.meta.env.VITE_API_URL}/broadcastUpdate`, {
                                             method: 'POST',
                                             headers: {'Content-type': 'application/json'},
                                             body: JSON.stringify({roomCode, newLeaderboardData})
