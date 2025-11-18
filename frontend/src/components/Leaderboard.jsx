@@ -5,13 +5,8 @@ function Leaderboard({participants}) {
     const sortedParticipants = [...participants].sort((a, b) => {
     // 1. PRIMARY: Score (Descending)
     if (a.score !== b.score) {
-        // Use standard comparison on numbers
         return b.score - a.score;
     }
-
-    // 2. TIE-BREAKER: Time (Ascending) - Handle NULL/unfinished first
-    
-    // Check if both users haven't finished (total_time is null).
     if (a.total_time === null && b.total_time === null) {
         return 0;
     }

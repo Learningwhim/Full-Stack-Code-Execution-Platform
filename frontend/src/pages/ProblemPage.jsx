@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-
+import Editor from '@monaco-editor/react';
 function ProblemPage() {
 
     const [problem, setProblem] = useState((null));
@@ -131,11 +131,13 @@ function ProblemPage() {
                     <option label="cpp">cpp</option>
                     </select>
                 </div>
-                <textarea 
+                <Editor 
                     className="submitted-code-input" 
                     id="submitted-code-input" 
                     placeholder='Start typing...'
                     value={code}
+                    language='cpp' 
+                    theme='vs-dark'
                     onChange={(e) => {setCode(e.target.value)
                     }}
                 />

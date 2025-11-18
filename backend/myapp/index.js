@@ -22,7 +22,7 @@ app.use(cors({
 }));
 app.use(express.json());
  app.use(express.urlencoded({extended: true}));
-app.use('/problems', problemRoutes);
+app.use('/problems',problemRoutes);
 app.use(submissionRoutes);
 app.use(testcaseRoutes);
 app.use('/auth', authRoutes);

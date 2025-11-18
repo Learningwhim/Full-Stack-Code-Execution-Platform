@@ -51,9 +51,9 @@ function RoomPage() {
     //if(roomData !== null) currentProblem = roomData.problems[currentProblemIndex];
     const handleNext = async () => {
         try{
-            const totalProblems = roomProblems.length;
+            const totalProblems = ProblemLength;
             //console.log(currProblemIndex);
-            if(currProblemIndex >= totalProblems)  setCurrentProblemIndex(0);
+            if(currProblemIndex >= totalProblems)  return;
             else setCurrentProblemIndex(currProblemIndex+1);
             //console.log(currProblemIndex);
         }catch(error){

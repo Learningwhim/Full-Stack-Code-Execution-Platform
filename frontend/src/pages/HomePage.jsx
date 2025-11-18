@@ -36,14 +36,15 @@ function HomePage() {
             memory_limit: problem_memory_limit
         }
         try {
-            e.preventDefault();
+             e.preventDefault();
             console.log("recieved req call fe");
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/add-problem`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/problems/add-problem`, {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(problem),
             });
             const data = await response.json();
+            console.log(data);
             setProblems(prev => [...prev, data]);
         }catch(error){
             console.error("Unable to add problem", error);
