@@ -16,7 +16,7 @@ function ProblemPage() {
     useEffect(() => {
             const fetchProblem = async() => {
             try {
-                const response = await fetch(`http://localhost:3000/problems/${problem_id}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/problems/${problem_id}`);
                 const data = await response.json();
                 setProblem(data);
                 setLoading(false);
@@ -41,7 +41,7 @@ function ProblemPage() {
         try{
             setStatus("Submitting...");
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`http://localhost:3000/submit`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/submit`, {
             method: "POST",
             headers: {"Content-type":"application/json",
                         "Authorization": `Bearer ${token}`
@@ -56,7 +56,7 @@ function ProblemPage() {
     }
     const analyzeComplexity = async() => {
         try {
-            const response = await fetch('http://localhost:3000/analyze',{
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/analyze`,{
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify({code: code})
@@ -78,7 +78,7 @@ function ProblemPage() {
         if(!submissionId) return;
         
         const intervalId = setInterval(async () => {
-            const response = await fetch(`http://localhost:3000/status/${submissionId}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/status/${submissionId}`);
             const data = await response.json();
             const newStatus = data.status;
             console.log(newStatus);

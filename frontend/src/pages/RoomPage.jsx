@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import Leaderboard from '../components/Leaderboard';
 import { useAuth } from '../context/AuthContext';
-
+import { io } from 'socket.io-client';
+import Editor from '@monaco-editor/react';
 function RoomPage() {
-    const user = useAuth();
+    const {user} = useAuth();
     const [isLoading, setLoading] = useState(true);
     const [submissionId, setSubmissionId] = useState();
     const [error, setError] = useState(null);
@@ -35,7 +36,7 @@ function RoomPage() {
                 setRoomProblems(data.room_problems);
                 setProblemLength(roomProblems.length);
                 setRoomParticipants(data.room_participants);
-                console.log(data);
+                //console.log(data);
                 setLoading(false);
             }catch(error){
                 setError("Failed to fetch roomData");
@@ -51,20 +52,20 @@ function RoomPage() {
     const handleNext = async () => {
         try{
             const totalProblems = roomProblems.length;
-            console.log(currProblemIndex);
+            //console.log(currProblemIndex);
             if(currProblemIndex >= totalProblems)  setCurrentProblemIndex(0);
             else setCurrentProblemIndex(currProblemIndex+1);
-            console.log(currProblemIndex);
+            //console.log(currProblemIndex);
         }catch(error){
             console.error("handle next problem occured");
         }
     }
     const handlePrev = async () => {
         try{
-            console.log(currProblemIndex);
+            //console.log(currProblemIndex);
             if(currProblemIndex <= 0)  return;
             else setCurrentProblemIndex(currProblemIndex-1);
-            console.log(currProblemIndex);
+            //console.log(currProblemIndex);
         }catch(error){
             console.error("handle next problem occured");
         }
@@ -110,17 +111,25 @@ function RoomPage() {
         }, 1000);
         return () => clearInterval(intervalId);
     },[submissionId]);
+    let count  = 0;
     useEffect( () => {
         try {
-            const socket = io(import.meta.env.VITE_API_URL);
-            
-            socket.emit("join-room", { roomCode : roomCode, user_id : user?.id });
-
+            if (!user) {
+                return; 
+            }
+            const socket = io('http://localhost:3000',  {
+                transports: ["websocket"]});
+            socket.emit("join-room", { roomCode : roomCode, user_id : user?.user_id });
+                console.log("hello world");
+            socket.on('leaderboardUpdate', (newLeaderboardData) => {
+                console.log("Leaderboard update received!");
+                setRoomParticipants(newLeaderboardData);
+            });
             return () => {
                 socket.disconnect();
             }
         }catch(error){
-
+            console.error("SOCKET ERROR HERE");
         }
     },[roomCode, user]);
     return(
@@ -172,13 +181,14 @@ function RoomPage() {
                     <option label="cpp">cpp</option>
                     </select>
                 </div>
-                <textarea 
+                <Editor language='cpp'
+                    theme="vs-dark"
                     className="submitted-code-input" 
                     id="submitted-code-input" 
                     placeholder='Start typing...'
                     value={code}
-                    onChange={(e) => {setCode(e.target.value)
-                    }}
+                    onChange={(value) => setCode(value)
+                    }
                 />
 
                 </div>

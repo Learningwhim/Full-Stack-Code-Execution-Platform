@@ -15,8 +15,11 @@ const authRoutes = require('./routes/users');
 const analysisRoute = require('./routes/analysis');
 const authMiddleware = require('./middleware/authMiddleware');
 const roomRoutes = require('./routes/rooms');
-
-app.use(cors());
+const broadcastRoute = require('./routes/broadcast');
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+}));
 app.use(express.json());
  app.use(express.urlencoded({extended: true}));
 app.use('/problems', problemRoutes);
@@ -25,6 +28,7 @@ app.use(testcaseRoutes);
 app.use('/auth', authRoutes);
 app.use(analysisRoute);
 app.use('/rooms', roomRoutes);
+app.use(broadcastRoute);
 // io.on("connection", (socket) => {
 //     console.log("socket connected: ", socket.id);       since hamne ye sab socker-server me shift kar diya
 

@@ -4,8 +4,8 @@
  */
 exports.up = function(knex) {
     return knex.schema.alterTable('submissions', submissions => {
-    submissions.string('roomCode'),
-    submissions.integer('room_id')
+    submissions.string('roomCode').nullable();
+    submissions.integer('room_id').nullable().references('rooms.room_id');
   });
 };
 

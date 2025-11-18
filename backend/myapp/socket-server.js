@@ -5,19 +5,24 @@ const PORT =  3000;
 
 const { Server } = require('socket.io');
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+  }
+});
 
 io.on("connection", (socket) => {
     console.log("socket connected: ", socket.id);
-
-    socket.on("join-room", ({userId, roomCode}) => {
-        socket.data.userId = userId;
+    socket.on("join-room", ({roomCode, user_id}) => {
+        socket.data.userId = user_id;
         socket.join(roomCode);
-        console.log("user ", userId, " Joined room: ",roomCode);
+        console.log("user ", user_id, " Joined room: ",roomCode);
     });
     socket.on("disconnect", () => {
         console.log("Disconnected ");
     });
 });
+
 
 module.exports = { app, io, server }; 

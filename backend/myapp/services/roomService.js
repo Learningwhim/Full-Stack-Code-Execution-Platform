@@ -78,6 +78,18 @@ async function getRoomService(roomCode){
         throw error;
     }
 }
+async function getleaderboardForRoomService (room_id) {
+    try {
+        return await db('room_participants').where({ 'room_participants.room_id': room_id }).join('users', 'room_participants.user_id', 'users.user_id').select(
+                                                                                                        'room_participants.participant_id',
+                                                                                                        'room_participants.score',
+                                                                                                        'room_participants.total_time',
+                                                                                                        'users.email'
+                                                                                                    ).orderBy('room_participants.score','desc');
+    }catch(error){
+        console.error(error);
+        throw error;
+    }
+}
 
-
-module.exports = {createRoomService,joinRoomService, getRoomService};
+module.exports = {createRoomService,joinRoomService, getRoomService, getleaderboardForRoomService};

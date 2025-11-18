@@ -16,7 +16,7 @@ function HomePage() {
         
         const fetchProblems = async () => {
         try {
-        const response = await fetch(`http://localhost:3000/problems`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/problems`);
         const data = await response.json();
         setProblems(data);
         setLoading(false);
@@ -36,7 +36,7 @@ function HomePage() {
         }
         try {
             console.log("recieved req call fe");
-            const response = await fetch(`http://localhost:3000/add-problem`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/add-problem`, {
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(problem),
@@ -54,7 +54,7 @@ function HomePage() {
                 input: testcaseInp,
                 expected_output: testcaseEO,
             }
-            await fetch("http://localhost:3000/addTestcase",  {
+            await fetch(`${import.meta.env.VITE_API_URL}/addTestcase`,  {
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify(testcase),

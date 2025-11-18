@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react'
-import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom';
 function RegisterPage(){
 
@@ -13,7 +12,7 @@ function RegisterPage(){
             event.preventDefault();
             setIsLoading(true);
             setError(null);
-            const response = await fetch('http://localhost:3000/auth/register', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify({

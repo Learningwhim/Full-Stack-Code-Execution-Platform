@@ -4,7 +4,6 @@ const {addSubmission, getSubmissionStatusService} = require('../services/submiss
 const getSubmissionStatus = async (req,res) => {
    try {
     const id = req.params.submission_id;
-
     const submission = await getSubmissionStatusService(id);
 
     if (!submission) {

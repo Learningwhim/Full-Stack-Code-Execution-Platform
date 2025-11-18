@@ -13,7 +13,7 @@ function RoomsPage() {
     useEffect( () => {
       const fetchProblems = async () => {
       try{ 
-        const response = await fetch('http://localhost:3000/problems');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/problems`);
         const data = await response.json();
         setProblems(data);
       }catch(error){
@@ -34,7 +34,7 @@ function RoomsPage() {
     async function handleJoinRoom() {
       try{
         const token = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:3000/rooms/join', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/rooms/join`, {
           method: 'POST',
           headers: {'Content-type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -56,7 +56,7 @@ function RoomsPage() {
     async function handleCreateRoom() {
       try {
         const token = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:3000/rooms/create', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/rooms/create`, {
           method: "POST",
           headers: {"Content-type":"application/json",
                         "Authorization": `Bearer ${token}`

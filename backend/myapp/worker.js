@@ -4,7 +4,8 @@ const execPromise = util.promisify(exec);
 const fs = require('fs');
 const path = require('path');
 const db = require('./db/database');
-
+const { io } = require('./socket-server');
+const { getleaderboardForRoomService } = require('./services/roomService');
 async function processSubmissions(){
     try { // take 1 row while updating its status in fcfs priority
         const job = await db('submissions').update({status: "In Progress"}).where('submission_id', function (){
@@ -14,6 +15,8 @@ async function processSubmissions(){
             const current_job = job[0];
             const problem = await db('problems').where('problem_id',current_job.problem_id).first();
             const testcase = await db('testcases').where('problem_id', current_job.problem_id).first();
+            console.log("Current job:", current_job);
+            console.log("Room ID:", current_job.room_id);
             if(!problem) console.error({error: "Problem not found"});
             else {
             // make a temporary path for directory
@@ -44,7 +47,7 @@ async function processSubmissions(){
                             new Promise((_, reject) => {
                                 setTimeout(() => {
                                 reject(new Error('Time Limit Exceeded'));
-                                }, (problem.time_limit * 1000)+500);
+                                }, (problem.time_limit * 1000)+1500);
                             })
                             ]);
                         if(stderr){
@@ -56,6 +59,37 @@ async function processSubmissions(){
                             const expected_output = (testcase.expected_output).trim().replace(/\r\n/g, '\n');
                             if(code_output == expected_output){
                                 await db('submissions').update({status: 'Accepted'}).where('submission_id', current_job.submission_id);
+                                const time_now = new Date().getTime();
+                                console.log("time");
+                                console.log(time_now);
+                                if(current_job.room_id){
+                                    try {
+                                        const time_now = Date.now();
+                                        const room = await db('rooms')
+                                            .where({ room_id: current_job.room_id })
+                                            .first();
+
+                                        await db('room_participants')
+                                            .where({ room_id: current_job.room_id, user_id: current_job.user_id })
+                                            .increment('score', 10)
+                                            .update({ total_time: time_now - new Date(room.created_at).getTime() });
+
+                                        const newLeaderboardData = await getleaderboardForRoomService(current_job.room_id);
+
+                                        console.log("EMITTING → Room:", current_job.roomCode);
+                                        const roomCode = current_job.roomCode;
+                                        const response = fetch(``${VITE_API_URL}/broadcastUpdate``, {
+                                            method: 'POST',
+                                            headers: {'Content-type': 'application/json'},
+                                            body: JSON.stringify({roomCode, newLeaderboardData})
+                                        });
+
+
+                                    } catch (err) {
+                                        console.error("EMIT ERROR:", err);
+                                    }
+
+                                }
                             }
                             else await db('submissions').update({status: 'Wrong Answer'}).where('submission_id', current_job.submission_id);
 
