@@ -104,7 +104,7 @@ function RoomsPage() {
             <p>Enter a room code to join an existing room:</p>
             <input
               type="text"
-              onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
+              onChange={(e) => setRoomCode(e.target.value)}
               placeholder="ABC123"
               maxLength={8}
               className="input-code"
