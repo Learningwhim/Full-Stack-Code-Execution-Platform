@@ -138,8 +138,8 @@ function ProblemPage() {
                     value={code}
                     language='cpp' 
                     theme='vs-dark'
-                    onChange={(e) => {setCode(e.target.value)
-                    }}
+                    onChange={(value) => setCode(value)
+                    }
                 />
 
                 </div>
