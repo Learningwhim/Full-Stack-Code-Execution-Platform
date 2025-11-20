@@ -20,7 +20,7 @@ function RoomPage() {
     const [roomProblems, setRoomProblems] = useState([]);
     const [roomParticipants, setRoomParticipants] = useState([]);
     const [sidebar, setSidebar] = useState(false);
-    const [ProblemLength, setProblemLength] = useState(0);
+    const [ProblemLength, setProblemLength] = useState();
     useEffect(() => {
         if(!roomCode || !token) return;
             const fetchRoomData = async() => {
@@ -34,9 +34,10 @@ function RoomPage() {
                 const data = await response.json();
                 setRoomData(data.roomDetails);
                 setRoomProblems(data.room_problems);
-                setProblemLength(roomProblems.length);
+                setProblemLength(data.room_problems);
+                console.log(roomProblems.length);
                 setRoomParticipants(data.room_participants);
-                //console.log(data);
+                console.log(data);
                 setLoading(false);
             }catch(error){
                 setError("Failed to fetch roomData");
@@ -47,24 +48,24 @@ function RoomPage() {
         
         
     }, [roomCode, token]);
-    //const currentProblem = null;
-    //if(roomData !== null) currentProblem = roomData.problems[currentProblemIndex];
     const handleNext = async () => {
         try{
-            const totalProblems = ProblemLength;
-            //console.log(currProblemIndex);
-            if(currProblemIndex >= totalProblems)  return;
-            else setCurrentProblemIndex(currProblemIndex+1);
-            //console.log(currProblemIndex);
+            console.log(currProblemIndex);
+            setCurrentProblemIndex( prev => {
+              if( prev >= roomProblems.length-1) return prev;
+              return prev+1;
+            });
         }catch(error){
             console.error("handle next problem occured");
         }
     }
     const handlePrev = async () => {
         try{
-            //console.log(currProblemIndex);
-            if(currProblemIndex <= 0)  return;
-            else setCurrentProblemIndex(currProblemIndex-1);
+            console.log(currProblemIndex);
+            setCurrentProblemIndex( prev => {
+              if( prev <= 0) return prev;
+              return prev-1;
+            })
             //console.log(currProblemIndex);
         }catch(error){
             console.error("handle next problem occured");
@@ -121,6 +122,11 @@ function RoomPage() {
                 transports: ["websocket"]});
             socket.emit("join-room", { roomCode : roomCode, user_id : user?.user_id });
                 console.log("hello world");
+            socket.on("connect_error", () => {
+                console.log("Reconnect attempt…");
+                socket.connect();
+            });
+
             socket.on('leaderboardUpdate', (newLeaderboardData) => {
                 console.log("Leaderboard update received!");
                 setRoomParticipants(newLeaderboardData);
@@ -134,86 +140,88 @@ function RoomPage() {
     },[roomCode, user]);
     return(
     <>
-    <div className="room-body">
-  <div className="room-left">
+          <div className="room-body">
+        <div className="room-left">
 
-    <button
-      className="leaderboard-toggle-btn"
-      onClick={() => setSidebar(!sidebar)}
-    >
-      {'View Live Rankings'}
-    </button>
+          <button
+            className="leaderboard-toggle-btn"
+            onClick={() => setSidebar(!sidebar)}
+          >
+            {'View Live Rankings'}
+          </button>
 
-    <div className={`room-sidebar ${sidebar ? "open" : ""}`}>
-      <button
-        className="room-sidebar-close"
-        onClick={() => setSidebar(false)}
-      >
-        ✖
-      </button>
-      <Leaderboard participants={roomParticipants} />
-    </div>
+          <div className={`room-sidebar ${sidebar ? "open" : ""}`}>
+            <button
+              className="room-sidebar-close"
+              onClick={() => setSidebar(false)}
+            >
+              ✖
+            </button>
+            <Leaderboard participants={roomParticipants} />
+          </div>
 
-    {isLoading ? (
-      <p>Loading...</p>
-    ) : error ? (
-      <p>{error}</p>
-    ) : (
-      <>
-        <div className="room-nav-buttons">
-          <button className="room-nav-btn" onClick={handlePrev}>{'< prev'}</button>
-          <button className="room-nav-btn" onClick={handleNext}>{'next >'}</button>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : (
+            <>
+              <div className="room-nav-buttons">
+                <button className="room-nav-btn" onClick={handlePrev}>{'< prev'}</button>
+                <button className="room-nav-btn" onClick={handleNext}>{'next >'}</button>
+              </div>
+
+              {roomProblems[currProblemIndex] && (<>
+              <h3 className="room-problem-title">
+                {currProblemIndex + 1}. {roomProblems[currProblemIndex].title}
+              </h3>
+              <p className="room-problem-desc">
+                {roomProblems[currProblemIndex].statement}
+              </p>
+              </>
+              )}
+
+              <pre>
+                  {`#include <iostream>
+                  using namespace std;
+
+                  int main() {
+                      return 0;
+                  }`}
+              </pre>
+            </>
+          )}
         </div>
 
-        <h3 className="room-problem-title">
-          {currProblemIndex + 1}. {roomProblems[currProblemIndex].title}
-        </h3>
+        <div className="room-right">
+          <div className="room-editor-header">
+            {status === "Submitting..." ? (
+              <button className="room-submit-btn">Submitting...</button>
+            ) : (
+              <button className="room-submit-btn" onClick={handleSubmit}>Submit</button>
+            )}
 
-        <p className="room-problem-desc">
-          {roomProblems[currProblemIndex].statement}
-        </p>
+            <p className="room-status">Status: {status}</p>
 
-        <pre>
-{`#include <iostream>
-using namespace std;
+            <select
+              className="room-lang-select"
+              value={language}
+              onChange={e => setLanguage(e.target.value)}
+            >
+              <option value="cpp">cpp</option>
+            </select>
+          </div>
 
-int main() {
-    return 0;
-}`}
-        </pre>
-      </>
-    )}
-  </div>
-
-  <div className="room-right">
-    <div className="room-editor-header">
-      {status === "Submitting..." ? (
-        <button className="room-submit-btn">Submitting...</button>
-      ) : (
-        <button className="room-submit-btn" onClick={handleSubmit}>Submit</button>
-      )}
-
-      <p className="room-status">Status: {status}</p>
-
-      <select
-        className="room-lang-select"
-        value={language}
-        onChange={e => setLanguage(e.target.value)}
-      >
-        <option value="cpp">cpp</option>
-      </select>
-    </div>
-
-    <div className="room-editor-box">
-      <Editor
-        language="cpp"
-        theme="vs-dark"
-        value={code}
-        onChange={(value) => setCode(value)}
-      />
-    </div>
-  </div>
-</div>
+          <div className="room-editor-box">
+            <Editor
+              language="cpp"
+              theme="vs-dark"
+              value={code}
+              onChange={(value) => setCode(value)}
+            />
+          </div>
+        </div>
+      </div>
 
     </>);
 }
