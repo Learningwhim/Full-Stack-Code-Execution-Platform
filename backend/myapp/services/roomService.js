@@ -1,7 +1,7 @@
 const db = require('../db/database');
 const { customAlphabet } = require('nanoid');
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 6);
-
+const { redis } = require("../config/redis");
 async function createRoomService(problemIds,user_id){
     return await db.transaction(async trx => {
         try {
@@ -53,26 +53,39 @@ async function getRoomService(roomCode){
         console.log("service hit hua");
         const room = await db('rooms').where({room_code: roomCode}).first();
         if(!room) return null;
-        const [room_problems, room_participants] = await Promise.all([
-        db('room_problems').where({room_id: room.room_id}).join('problems','room_problems.problem_id', 'problems.problem_id').select(
+        const key_room_problems = `roomProblems:${room.room_id}`;
+        let room_problems = await redis.get(key_room_problems);
+        if(room_problems){
+            console.log("Cache hit");
+            room_problems = JSON.parse(room_problems);
+        }
+        else {
+            console.log("Cache miss");
+            room_problems = await db('room_problems').where({room_id: room.room_id}).join('problems','room_problems.problem_id', 'problems.problem_id').select(
                                                                                                                                     'room_problems.problem_id',
                                                                                                                                     'problems.title',
                                                                                                                                     'problems.statement',
                                                                                                                                     'problems.time_limit',
                                                                                                                                     'problems.memory_limit'
-                                                                                                                                    ),
-        db('room_participants').where({ room_id: room.room_id }).join('users', 'room_participants.user_id', 'users.user_id').select(
+                                                                                                                                    );
+
+            await redis.set(key_room_problems, JSON.stringify(room_problems), {
+            EX: 300,
+        }); 
+
+    }                            
+        const room_participants = await  db('room_participants').where({ room_id: room.room_id }).join('users', 'room_participants.user_id', 'users.user_id').select(
                                                                                                         'room_participants.participant_id',
                                                                                                         'room_participants.score',
                                                                                                         'room_participants.total_time',
                                                                                                         'users.email'
-                                                                                                    )
-        ]);                                                                                           
+                                                                                                    );                                                      
         const roomConcatenated = {
             roomDetails: room,
             room_problems: room_problems,
             room_participants: room_participants
-        }                                                                                                
+        }                                            
+                                                     
         return roomConcatenated;
     }catch(error){
         console.error("room not found");

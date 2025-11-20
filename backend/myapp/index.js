@@ -6,6 +6,9 @@ const { app, io, server} = require('./socket-server');
 // const { Server } = require('socket.io');
 // const server = http.createServer(app);
 // const io = new Server(server);
+const { initRedis } = require("./config/redis.js");
+
+//await initRedis();  // connect only once on startup
 
 const cors = require('cors');
 const problemRoutes = require('./routes/problems');
@@ -29,18 +32,12 @@ app.use('/auth', authRoutes);
 app.use(analysisRoute);
 app.use('/rooms', roomRoutes);
 app.use(broadcastRoute);
-// io.on("connection", (socket) => {
-//     console.log("socket connected: ", socket.id);       since hamne ye sab socker-server me shift kar diya
 
-//     socket.on("join-room", ({userId, roomCode}) => {
-//         socket.data.userId = userId;
-//         socket.join(roomCode);
-//         console.log("user ", userId, " Joined room: ",roomCode);
-//     });
-//     socket.on("disconnect", () => {
-//         console.log("Disconnected ");
-//     });
-// });
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+async function startServer() {
+    await initRedis();   // NOW allowed  
+    server.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+startServer();
