@@ -126,7 +126,7 @@ function RoomPage() {
                 console.log("Reconnect attempt…");
                 socket.connect();
             });
-
+            
             socket.on('leaderboardUpdate', (newLeaderboardData) => {
                 console.log("Leaderboard update received!");
                 setRoomParticipants(newLeaderboardData);
