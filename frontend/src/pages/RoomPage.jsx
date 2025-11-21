@@ -140,6 +140,11 @@ function RoomPage() {
     },[roomCode, user]);
     return(
     <>
+    {error && (
+        <p style={{ color: "red", marginTop: "10px" }}>
+          {error}
+        </p>
+      )}
           <div className="room-body">
         <div className="room-left">
 

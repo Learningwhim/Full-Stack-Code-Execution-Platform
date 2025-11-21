@@ -17,6 +17,7 @@ function RoomsPage() {
         const data = await response.json();
         setProblems(data);
       }catch(error){
+        setError(error);
         console.error("failed to fetch problems");
       }
     }
@@ -49,12 +50,14 @@ function RoomsPage() {
           throw new Error(errorData.error);
         }
       }catch(err){
+        setError("Room not found");
         console.error(err);
       }
     }
 
     async function handleCreateRoom() {
       try {
+        if(problemIds.length < 1) throw err;
         const token = localStorage.getItem('authToken');
         const response = await fetch(`${import.meta.env.VITE_API_URL}/rooms/create`, {
           method: "POST",
@@ -68,13 +71,20 @@ function RoomsPage() {
         setRoomCode(room_code);
         navigate(`/rooms/${room_code}`);
       }catch(error){
+        setError("Unable to create room");
         console.error("failed to create request");
       }
     }
-    return (
+    return (<>
+      {error && (
+        <p style={{ color: "red", marginTop: "30px", marginRight: "20px",textAlign: "right"}}>
+          {error}
+        </p>
+      )}
     <div className="rooms-page">
+      
   <div className="tab-toggle">
-
+      
     <button className="toggle-buttons" onClick={() => setActiveTab("join")}>
       Join Room
     </button>
@@ -147,9 +157,9 @@ function RoomsPage() {
       </section>
     )}
 
+    </div>
   </div>
-</div>
-
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-const {triggerLeaderboardBroadcast} = require('../services/broadcastService');
+const { triggerLeaderboardBroadcast } = require('../services/broadcastService');
 
 const handleWorkerbroadcast = async (req, res) => {
     try{
