@@ -12,4 +12,4 @@ async function addTestcases(testcase){
     }
 }
 
-module.export = addTestcases;
+module.export = {addTestcases};

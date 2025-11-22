@@ -1,4 +1,4 @@
-const addTestcase = require('../services/testcaseService');
+const { addTestcases } = require('../services/testcaseService');
 const createTestcase = async (req, res) => {
     try {
         console.log("recieved req ");
@@ -9,4 +9,4 @@ const createTestcase = async (req, res) => {
     }
     
 }
-module.exports = createTestcase;
+module.exports = {createTestcase};

@@ -52,16 +52,20 @@ function HomePage() {
     }
     const handleTestcaseSubmit = async () => {
         try {
+            e.preventDefault();
+            console.log("reached here");
             const testcase = {
                 problem_id: testcaseId,
                 input: testcaseInp,
                 expected_output: testcaseEO,
             }
+            console.log("reached here 2");
             await fetch(`${import.meta.env.VITE_API_URL}/addTestcase`,  {
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify(testcase),
             });
+            console.log("reached here");
         }catch(error){
             console.error("Failed to submit testcase");
         }
