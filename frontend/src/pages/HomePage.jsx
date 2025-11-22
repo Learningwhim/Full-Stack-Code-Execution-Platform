@@ -50,9 +50,10 @@ function HomePage() {
             console.error("Unable to add problem", error);
         }
     }
-    const handleTestcaseSubmit = async () => {
+    const handleTestcaseSubmit = async (e) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
+            
             console.log("reached here");
             const testcase = {
                 problem_id: testcaseId,
