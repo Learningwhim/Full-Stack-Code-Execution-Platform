@@ -1,19 +1,19 @@
 const { triggerLeaderboardBroadcast } = require('../services/broadcastService');
 
 const handleWorkerbroadcast = async (req, res) => {
-    try{
-        const roomCode = req.body.roomCode;
-        const newLeaderboardData = req.body.newLeaderboardData
+    try {
+        const { roomCode, newLeaderboardData } = req.body;
+
         console.log("Controller working");
-        const response = await triggerLeaderboardBroadcast(roomCode, newLeaderboardData);
-        if(response.ok){
-             res.status(200).json({ success: true });
-        }
-        else throw error;
-    }catch(error){
+
+        await triggerLeaderboardBroadcast(roomCode, newLeaderboardData);
+
+        res.status(200).json({ success: true });
+
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "unable to put service req"});
+        res.status(500).json({ error: "unable to broadcast" });
     }
-}
+};
 
 module.exports = {handleWorkerbroadcast}
