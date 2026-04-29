@@ -7,10 +7,11 @@ const handleWorkerbroadcast = async (req, res) => {
         console.log("Controller working");
         const response = await triggerLeaderboardBroadcast(roomCode, newLeaderboardData);
         if(response.ok){
-            res.status(200).json("OK");
+             res.status(200).json({ success: true });
         }
         else throw error;
     }catch(error){
+        console.error(error);
         res.status(500).json({error: "unable to put service req"});
     }
 }
