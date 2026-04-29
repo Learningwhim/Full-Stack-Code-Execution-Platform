@@ -1,5 +1,5 @@
 const {addSubmission, getSubmissionStatusService} = require('../services/submissionService');
-
+const { triggerLeaderboardBroadcast } = require('../services/broadcastService');
 // this will put up a req in db to fetch status of provided submission
 const getSubmissionStatus = async (req,res) => {
    try {
@@ -25,7 +25,15 @@ const createSubmission = async (req,res) => {
     const problem = req.body;
     const submission = {user_id, ...problem};
     const newSubmission = await addSubmission(submission);
-    
+    const roomCode = problem.roomCode;
+    // 🔥 TEMP DUMMY DATA (test ke liye)
+        const dummyLeaderboard = [
+            { user_id, score: Math.floor(Math.random() * 100) }
+        ];
+
+        // 🔥 THIS WAS MISSING
+        await triggerLeaderboardBroadcast(roomCode, dummyLeaderboard);
+
     res.json({submission_id: newSubmission[0].submission_id});
     }
     catch(error){
