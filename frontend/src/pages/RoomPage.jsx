@@ -120,17 +120,48 @@ function RoomPage() {
             }
             const socket = io(`${import.meta.env.VITE_API_URL}`,  {
                 transports: ["websocket"]});
-            socket.emit("join-room", { roomCode : roomCode, user_id : user?.user_id });
-                console.log("hello world");
-            socket.on("connect_error", () => {
-                console.log("Reconnect attempt…");
-                socket.connect();
-            });
+                socket.emit("join-room", {
+                    roomCode,
+                    user_id: user.user_id //  optional chaining
+                });
+            // socket.emit("join-room", { roomCode : roomCode, user_id : user?.user_id });
+            //     console.log("hello world");
+            // socket.on("connect_error", () => {
+            //     console.log("Reconnect attempt…");
+            //     socket.connect();
+            // });
             
-            socket.on('leaderboardUpdate', (newLeaderboardData) => {
-                console.log("Leaderboard update received!");
-                setRoomParticipants(newLeaderboardData);
+            socket.on('leaderboardUpdate', (data) => {
+            console.log("Leaderboard update received!", data);
+
+            setRoomParticipants(prev => {
+            const map = new Map(
+              prev.map(p => [p.user_id, p])
+            );
+
+            data.forEach(p => {
+              const id = p.user_id;
+              if (!id) return;
+
+              const old = map.get(id) || {};
+
+              map.set(id, {
+                ...old,
+
+                participant_id: old.participant_id ?? p.participant_id,
+                user_id: id,
+
+                email: old.email,
+                name: old.name,
+
+                score: p.score ?? old.score ?? 0,
+                total_time: p.total_time ?? old.total_time ?? null,
+              });
             });
+
+            return Array.from(map.values());
+          });
+          });
             return () => {
                 socket.disconnect();
             }
@@ -191,6 +222,9 @@ function RoomPage() {
                   using namespace std;
 
                   int main() {
+                      int a, b;
+                      cin >> a >> b;
+                      cout << a+b;
                       return 0;
                   }`}
               </pre>
