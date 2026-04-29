@@ -14,6 +14,7 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log("socket connected: ", socket.id);
+    console.log("SOCKET INSTANCE:", process.pid);
     socket.on("join-room", ({roomCode, user_id}) => {
         socket.data.userId = user_id;
         socket.join(roomCode);
