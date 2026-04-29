@@ -28,7 +28,7 @@ function Leaderboard({participants}) {
         <h3 className="lb-title">Leaderboard</h3>
       <ul className="lb-list">
         {sortedParticipants.map((participant, index) => (
-          <li className="lb-row" key={participant.participant_id}>
+          <li className="lb-row" key={participant.participant_id || participant.user_id}>
             <span className="lb-rank">{index + 1}.</span>
             <span className="lb-name">
               {participant?.email
