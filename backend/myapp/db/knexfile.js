@@ -4,9 +4,9 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-  host: 'aws-1-ap-south-1.pooler.supabase.com',
+  host: 'db.rheqruzluqllbookhqkv.supabase.co',
   port: 5432,
-  user: 'postgres', // ✅ FIXED
+  user: 'postgres',
   password: process.env.DB_PASSWORD,
   database: 'postgres',
   ssl: { require: true, rejectUnauthorized: false }
