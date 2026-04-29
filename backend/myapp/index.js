@@ -2,7 +2,9 @@ const express = require('express');
 // const http = require('http'); since hamne ye sab socker-server me shift kar diya
 // const app = express();
 const PORT =  3000;
-const { app, io, server} = require('./socket-server');
+const { app, server, initIO } = require('./socket-server');
+
+initIO();
 // const { Server } = require('socket.io');
 // const server = http.createServer(app);
 // const io = new Server(server);
