@@ -17,8 +17,12 @@ function HomePage() {
         const fetchProblems = async () => {
         try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/problems`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch problems");
+        }
         const data = await response.json();
-        setProblems(data);
+
+        setProblems(Array.isArray(data) ? data : []);
         setLoading(false);
         }catch(error){
             setError("Failed to fetch problems");
