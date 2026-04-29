@@ -19,8 +19,8 @@ async function addSubmission(submission) {
             code: submission.code,
             language: submission.language,
             status: "Pending",
-            room_id: room.room_id,
-            room_code: submission.roomCode
+            //room_id: room.room_id,
+            //room_code: submission.roomCode
         }).returning('submission_id');
         return result;
         }
