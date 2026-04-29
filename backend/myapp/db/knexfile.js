@@ -4,11 +4,11 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-  host: 'db.rheqruzluqllbookhqkv.supabase.co',
-  port: 5432,
-  user: 'postgres',
-  password: process.env.DB_PASSWORD,
-  database: 'postgres',
+  host: 'aws-1-ap-northeast-1.pooler.supabase.com',
+      port: 5432,
+      user: 'postgres.rheqruzluqllbookhqkv',
+      password: process.env.DB_PASSWORD,
+      database: 'postgres',
   ssl: { require: true, rejectUnauthorized: false }
 },
     pool: { min: 2, max: 15 },
