@@ -3,10 +3,10 @@ const {redis} = require('../config/redis');
 
 async function getProblems(){
     try {
-        // await redis.set("test:key", "hello");
+        await redis.set("test:key", "hello");
 
-        // const value = await redis.get("test:key");
-        // console.log("Redis says:", value);
+        const value = await redis.get("test:key");
+        console.log("Redis says:", value);
 
         const key = 'allProblems';
         let cached = await redis.get(key);

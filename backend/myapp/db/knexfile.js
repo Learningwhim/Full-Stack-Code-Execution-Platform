@@ -1,16 +1,16 @@
 require('dotenv').config();
-
+//console.log("DB URL:", process.env.DATABASE_URL);
 module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: process.env.DB_HOST || 'aws-1-ap-south-1.pooler.supabase.com',
-      port: process.env.DB_PORT || 5432,
-      user: process.env.DB_USER || 'postgres.sqlmlvqpcekvxlkjusle',
-      password: process.env.DB_PASSWORD || '*&r67.wKfsCQ4bk',
-      database: process.env.DB_DATABASE || 'postgres',
-      ssl: { require: true, rejectUnauthorized: false }
-    },
+  host: 'aws-1-ap-south-1.pooler.supabase.com',
+  port: 5432,
+  user: 'postgres', // ✅ FIXED
+  password: process.env.DB_PASSWORD,
+  database: 'postgres',
+  ssl: { require: true, rejectUnauthorized: false }
+},
     pool: { min: 2, max: 15 },
     migrations: { directory: './migrations' },
     seeds: { directory: './seeds' }
