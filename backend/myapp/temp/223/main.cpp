@@ -1,5 +1,9 @@
 #include <iostream>
+using namespace std;
 
-using namespace std; int main(){ int a, b;
-cin >> a;
-cout<< a*a;return 0; }
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a + b;
+    return 0;
+}

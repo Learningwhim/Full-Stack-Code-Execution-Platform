@@ -12,14 +12,14 @@ async function addSubmission(submission) {
         return result;
         }else {
             const room = await db('rooms').where({ room_code : submission.roomCode}).select('room_id').first();
-            if (!room) throw new Error(`No room with that roomCode: ${submission.roomCode} found!`);
+            if (!room) throw new Error(`No room with that roomCode: ${submission.room_code} found!`);
             const result = await db('submissions').insert({
             problem_id: submission.problem_id,
             user_id: submission.user_id,
             code: submission.code,
             language: submission.language,
             status: "Pending",
-            //room_id: room.room_id,
+            room_id: room.room_id,
             //room_code: submission.roomCode
         }).returning('submission_id');
         return result;
