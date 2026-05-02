@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-let io; // 🔴 important
+let io; // important
 
 function initIO() {
     io = new Server(server, {

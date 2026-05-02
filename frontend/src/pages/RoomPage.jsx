@@ -135,32 +135,32 @@ function RoomPage() {
             console.log("Leaderboard update received!", data);
 
             setRoomParticipants(prev => {
-            const map = new Map(
-              prev.map(p => [p.user_id, p])
-            );
+          const map = new Map(
+            prev.map(p => [p.user_id, p])
+          );
 
-            data.forEach(p => {
-              const id = p.user_id;
-              if (!id) return;
+          data.forEach(p => {
+            const id = p.user_id;
+            if (!id) return;
 
-              const old = map.get(id) || {};
+            const old = map.get(id) || {};
 
-              map.set(id, {
-                ...old,
+            map.set(id, {
+              ...old,
 
-                participant_id: old.participant_id ?? p.participant_id,
-                user_id: id,
+              participant_id: old.participant_id ?? p.participant_id,
+              user_id: id,
 
-                email: old.email,
-                name: old.name,
+              email: old.email,
+              name: old.name,
 
-                score: p.score ?? old.score ?? 0,
-                total_time: p.total_time ?? old.total_time ?? null,
-              });
+              score: p.score ?? old.score ?? 0,
+              total_time: p.total_time ?? old.total_time ?? null,
             });
-
-            return Array.from(map.values());
           });
+
+          return Array.from(map.values());
+        });
           });
             return () => {
                 socket.disconnect();
