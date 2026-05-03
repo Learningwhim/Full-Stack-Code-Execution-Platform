@@ -76,7 +76,7 @@ async function processSubmissions(){
 
                                         const newLeaderboardData = await getleaderboardForRoomService(current_job.room_id);
                                         console.log("Full b: ", newLeaderboardData);
-                                        const roomCode = room.roomCode;
+                                        const roomCode = room.room_code;
                                         console.log("EMITTING → Room:", roomCode);
                                         const response = await fetch(`${process.env.VITE_API_URL}/broadcastUpdate`, {
                                             method: 'POST',

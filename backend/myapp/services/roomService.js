@@ -76,6 +76,7 @@ async function getRoomService(roomCode){
     }                            
         const room_participants = await  db('room_participants').where({ room_id: room.room_id }).join('users', 'room_participants.user_id', 'users.user_id').select(
                                                                                                         'room_participants.participant_id',
+                                                                                                        'room_participants.user_id',
                                                                                                         'room_participants.score',
                                                                                                         'room_participants.total_time',
                                                                                                         'users.email'
@@ -96,6 +97,7 @@ async function getleaderboardForRoomService (room_id) {
     try {
         return await db('room_participants').where({ 'room_participants.room_id': room_id }).join('users', 'room_participants.user_id', 'users.user_id').select(
                                                                                                         'room_participants.participant_id',
+                                                                                                        'room_participants.user_id',
                                                                                                         'room_participants.score',
                                                                                                         'room_participants.total_time',
                                                                                                         'users.email'
