@@ -6,6 +6,7 @@ const handleWorkerbroadcast = async (req, res) => {
         console.log("BODY:", req.body);
         console.log("Controller working");
         console.log("HTTP INSTANCE:", process.pid);
+        console.log("CONTROLLER RECEIVED:", newLeaderboardData);
         await triggerLeaderboardBroadcast(roomCode, newLeaderboardData);
 
         res.status(200).json({ success: true });

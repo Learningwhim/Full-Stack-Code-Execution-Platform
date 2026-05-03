@@ -4,7 +4,7 @@ const execPromise = util.promisify(exec);
 const fs = require('fs');
 const path = require('path');
 const db = require('./db/database');
-const { io } = require('./socket-server');
+const { getIO } = require('./socket-server');
 const { getleaderboardForRoomService } = require('./services/roomService');
 async function processSubmissions(){
     try { // take 1 row while updating its status in fcfs priority
