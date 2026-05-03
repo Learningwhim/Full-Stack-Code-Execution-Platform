@@ -115,7 +115,7 @@ function RoomPage() {
     let count  = 0;
     useEffect( () => {
         try {
-            if (!user) {
+            if (!user || !roomCode) {
                 return; 
             }
             const socket = io(`${import.meta.env.VITE_API_URL}`,  {
@@ -156,7 +156,7 @@ function RoomPage() {
         }catch(error){
             console.error("SOCKET ERROR HERE");
         }
-    },[roomCode]);
+    },[roomCode, user?.user_id]);
     return(
     <>
     {error && (
