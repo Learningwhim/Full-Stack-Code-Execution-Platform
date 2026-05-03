@@ -62,15 +62,17 @@ function HomePage() {
             const testcase = {
                 problem_id: testcaseId,
                 input: testcaseInp,
-                expected_output: testcaseEO,
+                expected_output: testcaseEO
             }
             console.log(testcase);
             console.log("reached here 2");
-            await fetch(`${import.meta.env.VITE_API_URL}/addTestcase`,  {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/addTestcase`,  {
                 method: "POST",
                 headers: {"Content-type": "application/json"},
                 body: JSON.stringify(testcase),
             });
+            const data = await res.json();
+            console.log("RESPONSE:", data);
             console.log("reached here");
         }catch(error){
             console.error("Failed to submit testcase");
