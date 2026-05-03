@@ -132,10 +132,24 @@ function RoomPage() {
             // });
             
             socket.on('leaderboardUpdate', (data) => {
-              console.log("Leaderboard update received!", data);
+            console.log("Leaderboard update received!", data);
 
-              setRoomParticipants(data);   // 🔥 FULL REPLACE
-            });
+            setRoomParticipants(prev =>
+              prev.map(user => {
+                const updated = data.find(p => p.user_id === user.user_id);
+
+                if (updated) {
+                  return {
+                    ...user,
+                    score: updated.score,
+                    total_time: updated.total_time ?? user.total_time
+                  };
+                }
+
+                return user;
+              })
+            );
+          });
             return () => {
                 socket.disconnect();
             }
