@@ -26,14 +26,6 @@ const createSubmission = async (req,res) => {
     const submission = {user_id, ...problem};
     const newSubmission = await addSubmission(submission);
     const roomCode = problem.roomCode;
-    // 🔥 TEMP DUMMY DATA (test ke liye)
-        const dummyLeaderboard = [
-            { user_id, score: Math.floor(Math.random() * 100) }
-        ];
-
-        // 🔥 THIS WAS MISSING
-        await triggerLeaderboardBroadcast(roomCode, dummyLeaderboard);
-
     res.json({submission_id: newSubmission[0].submission_id});
     }
     catch(error){

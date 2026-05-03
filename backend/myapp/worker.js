@@ -78,7 +78,7 @@ async function processSubmissions(){
                                         console.log("Full b: ", newLeaderboardData);
                                         const roomCode = room.room_code;
                                         console.log("EMITTING → Room:", roomCode);
-                                        const response = await fetch(`${process.env.VITE_API_URL}/broadcastUpdate`, {
+                                        const response = await fetch(`https://full-stack-code-execution-platform.onrender.com/broadcastUpdate`, {
                                             method: 'POST',
                                             headers: {'Content-type': 'application/json'},
                                             body: JSON.stringify({roomCode, newLeaderboardData})
