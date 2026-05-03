@@ -64,6 +64,7 @@ function HomePage() {
                 input: testcaseInp,
                 expected_output: testcaseEO,
             }
+            console.log(testcase);
             console.log("reached here 2");
             await fetch(`${import.meta.env.VITE_API_URL}/addTestcase`,  {
                 method: "POST",
