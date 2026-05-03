@@ -8,6 +8,7 @@ async function addTestcases(testcase){
             expected_output: testcase.expected_output
         });
     }catch(error){
+        console.log("testcase service error");
         throw error;
     }
 }
