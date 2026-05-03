@@ -156,7 +156,7 @@ function RoomPage() {
         }catch(error){
             console.error("SOCKET ERROR HERE");
         }
-    },[roomCode, user]);
+    },[roomCode]);
     return(
     <>
     {error && (
