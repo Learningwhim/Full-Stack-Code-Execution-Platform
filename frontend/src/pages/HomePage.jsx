@@ -73,9 +73,10 @@ function HomePage() {
             });
             const data = await res.json();
             console.log("RESPONSE:", data);
-            console.log("reached here");
+            console.log("reached here 3");
         }catch(error){
             console.error("Failed to submit testcase");
+            throw error;
         }
     }
     return (
